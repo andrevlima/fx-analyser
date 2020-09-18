@@ -1,18 +1,17 @@
+const crawler = require("./crawler");
 
-exports.apis = function (app) {
-    app.get('/', function (req, res) {
-        res.send("Site de Tecnologia");
-    });
-
-    app.get('/portateis', function (req, res) {
-        res.send("Categoria de Portateis");
-    });
-
-    app.get('/smartphones', function (req, res) {
-        res.send("Categoria de Smartphones");
-    });
-
-    app.get('/tablets', function (req, res) {
-        res.send("Categoria de Tablets");
+const currency = "usd";
+exports.api = function (app) {
+    app.get(`/currencies/${currency}/info`, async function (req, res) {
+        crawler.getGDP().then(function(gdpList) {
+            res.json({
+                gdp: {
+                    status: gdpList[0].actual_percentage >= 3 ? "growing" :
+                            gdpList[0].actual_percentage >= 0.5  ? "ok" :
+                            "recession",
+                    list: gdpList,
+                },
+            });
+        })
     });
 }

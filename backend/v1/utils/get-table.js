@@ -1,25 +1,6 @@
-const pupeteer = require('puppeteer');
-const fs = require("fs");
-
-(async () => {
-    const tableSelector = "#aspnetForm > div.container > div > div.col-lg-8.col-md-9 > div.panel.panel-default > div > table";
-
-    const options = {
-        width: 1200,
-        height: 1268
-    };
-    const browser = await pupeteer.launch({
-        headless: 1,
-        ignoreHTTPSErrors: true,
-        devtools: true,
-        defaultViewport: null
-        //args: [`--window-size=${options.width},${options.height}`] // new option
-    });
-    const page = await browser.newPage();
-    await page.goto('https://tradingeconomics.com/european-union/gdp-growth');
+exports.getTable = async function(page, tableSelector) {
     await page.waitForSelector(tableSelector);
-
-    const table = await page.evaluate((tableSelector) => {
+    return await page.evaluate((tableSelector) => {
         function getColumnsFromTable(selector) {
             let columns = {};
             function camelfy(txt) {
@@ -66,22 +47,4 @@ const fs = require("fs");
 
         return getDataFromTable(tableSelector);
     }, tableSelector);
-
-    // await page.waitForSelector("#ctl00_ContentPlaceHolder1_ctl00_ctl01_Panel1");
-    // const news = await page.evaluate(() => {
-    //     const data = $("#ctl00_ContentPlaceHolder1_ctl00_ctl01_Panel1").find(".list-group-item").map((i, row) => {
-    //         return {
-    //             title: $(row).find(">b").text(),
-    //             content: $(row).find(">.comment").text(),
-    //             date: $(row).find(">small").text()
-    //         }
-    //     });
-
-    //     return data.get();
-    // })
-    // fs.writeFileSync('news.json', JSON.stringify(news, null, 2));
-
-    fs.writeFileSync('gdp.json', JSON.stringify(table, null, 2));
-    await browser.close();
-
-})();
+}
