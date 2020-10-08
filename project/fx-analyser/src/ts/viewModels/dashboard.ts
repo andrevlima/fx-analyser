@@ -64,6 +64,7 @@ class DashboardViewModel {
           createWidget("D");
           createWidget("M");
           createWidget("30");
+          createWidget("W");
         })
       })
     })
