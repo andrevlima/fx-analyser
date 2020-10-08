@@ -1,0 +1,145 @@
+<!--
+ Copyright (c) 2014, 2020, Oracle and/or its affiliates.
+ Licensed under The Universal Permissive License (UPL), Version 1.0
+ as shown at https://oss.oracle.com/licenses/upl/
+ -->
+<style>
+
+  img {
+    border-right: 4px solid black;
+    border-left: 4px solid #418cf0;
+  }
+
+  .graph {
+    position: relative;
+    display: inline-block;
+  }
+
+  .left-label {
+    top: 50%;
+    display: block;
+    position: absolute;
+    transform: rotate(-90deg);
+    left: 5px;
+    font-weight: bold;
+    color: #418cf0;
+  }
+
+  .right-label {
+    top: 50%;
+    display: block;
+    position: absolute;
+    transform: rotate(-90deg);
+    right: 5px;
+    font-weight: bold;
+  }
+
+
+</style>
+<script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+<!-- <div style="width: 400px;position: fixed;/* padding-bottom: 56.25%; */bottom: -157px;right: 0px;z-index: 1000;height: 400px;"><iframe src="https://player.cnbc.com/p/gZWlPC/cnbc_global?playertype=synd&amp;byGuid=3000628768" style="border: 0; top: 0; left: 0; width: 100%; height: 100%; position: absolute;" allowfullscreen scrolling="no" allow="encrypted-media"></iframe></div> -->
+<div class="oj-hybrid-padding">
+  <div>
+    <div class="oj-flex">
+      <div class="oj-sm-12">
+        <h5>Moedas</h5>
+        <oj-combobox-one value="{{firstEconomy}}" style="max-width: 20em;">
+          <oj-bind-for-each data="[[economies]]">
+            <template>
+              <oj-option value="[[$current.data.currency]]">
+                <oj-bind-text value="[[$current.data.currency]]"></oj-bind-text>
+              </oj-option>
+            </template>
+          </oj-bind-for-each>
+        </oj-combobox-one>
+        <oj-combobox-one value="{{secondEconomy}}" style="max-width: 20em;">
+          <oj-bind-for-each data="[[economies]]">
+            <template>
+              <oj-option value="[[$current.data.currency]]">
+                <oj-bind-text value="[[$current.data.currency]]"></oj-bind-text>
+              </oj-option>
+            </template>
+          </oj-bind-for-each>
+        </oj-combobox-one>
+      </div>
+    </div>
+    <div class="oj-flex">
+      <div class="oj-sm-12" data-bind="visible: currentEco(firstEconomy()).partners.includes(secondEconomy())">
+        <h5>Detalhes</h5>
+        <p>Existe parceria comercial entre os paises</p>
+      </div>
+    </div>
+    <div class="oj-flex" data-bind="foreach: currentEco(firstEconomy()).urls">
+      <div class="oj-lg-6">
+        <div class="container">
+          <h3 data-bind="text: name"></h3>
+          <div class="graph">
+            <span class="left-label" data-bind="text: $parent.firstEconomy"></span>
+            <img data-bind="attr: { 'src': $data.url( $parent.currentEco($parent.secondEconomy()).urlPath ) }">
+            <span class="right-label" data-bind="text: $parent.secondEconomy"></span>
+          </div>
+        </div>
+        <ul>
+          <li style="display: inline-block;padding: 0px 0px;">
+            Clique para ver
+          </li>
+          <li style="display: inline-block;padding: 0px 0px;">
+            <a target="_blank" data-bind="attr: { href: $data.link($parent.currentEco($parent.firstEconomy()).urlPath) }">analise do <span data-bind="text: $parent.firstEconomy"></span></a>
+          </li>
+          <li style="display: inline-block;padding: 0px 0px;">ou</li>
+          <li style="display: inline-block;">
+            <a target="_blank" data-bind="attr: { href: $data.link($parent.currentEco($parent.secondEconomy()).urlPath) }">analise do <span data-bind="text: $parent.secondEconomy"></span></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="oj-sm-12">
+      <h3>Calendário</h3>
+      <!-- TradingView Widget BEGIN -->
+      <div class="tradingview-widget-container"  style="height: 600px;" data-bind="if: refreshedCalendar">
+        <iframe id="calendar-iframe" scrolling="no" allowtransparency="true" frameborder="0" 
+        data-bind='attr: { 
+          src: calendarUrl
+        }'
+        style="box-sizing: border-box; height: calc(100% - 32px); width: 100%;"></iframe>
+      </div>
+      <!-- TradingView Widget END -->
+    </div>
+    <div class="oj-flex">
+      <div class="oj-sm-12">
+        <h3>Preços e Gráficos</h3>
+        <h6>Mensal/Semanal/Diario/30 Minutos</h6>
+        <div class="tradingview-widget-container">
+          <div id="chart_m" style="height: 600px;"></div>
+        </div>
+        <div class="oj-flex">
+          <div class="oj-sm-6">
+            <div class="tradingview-widget-container">
+              <div id="chart_w" style="height: 400px;"></div>
+            </div>
+          </div>
+          <div class="oj-sm-6">
+            <div class="tradingview-widget-container">
+              <div id="chart_d" style="height: 400px;"></div>
+            </div>
+          </div>
+        </div>
+        <div class="oj-flex">
+          <div class="oj-sm-12">
+            <div class="tradingview-widget-container">
+              <div id="chart_30" style="height: 400px;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="oj-flex">
+      <div class="oj-sm-12">
+        <h6>Mapa</h6>
+        <p><small>Consiga perceber rapidamente se a moeda base ou de cotação está indo bem ou mau no dia de hoje em relação a outros pares</small></p>
+        <iframe scrolling="no" allowtransparency="true" frameborder="0" src="https://s.tradingview.com/embed-widget/forex-heat-map/?locale=br#%7B%22width%22%3A770%2C%22height%22%3A400%2C%22currencies%22%3A%5B%22EUR%22%2C%22USD%22%2C%22JPY%22%2C%22GBP%22%2C%22CHF%22%2C%22AUD%22%2C%22CAD%22%2C%22NZD%22%2C%22CNY%22%5D%2C%22isTransparent%22%3Afalse%2C%22colorTheme%22%3A%22light%22%2C%22utm_source%22%3A%22br.tradingview.com%22%2C%22utm_medium%22%3A%22widget_new%22%2C%22utm_campaign%22%3A%22forex-heat-map%22%7D" style="box-sizing: border-box; height: calc(368px); width: 100%;"></iframe>
+      </div>
+    </div>
+
+  </div>
+</div>
