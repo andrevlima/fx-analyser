@@ -17,6 +17,7 @@ declare class DashboardViewModel {
     currentEco: (currency: any) => {} | any;
     calendarUrl: ko.Computed<string>;
     refreshedCalendar: any;
+    infoByKey: any;
     constructor();
     /**
      * Optional ViewModel method invoked after the View is inserted into the
