@@ -16,6 +16,8 @@ class DashboardViewModel {
   public mapKeyToTitle: { balance: string; inflation: string; interest: string; gdp: string; manufactoringPmi: string; };
   public currentEco: (currency: any) => {} | any;
   calendarUrl: ko.Computed<string>;
+  refreshedCalendar: any;
+  
 
   constructor() {
     const self = this;
@@ -207,11 +209,20 @@ class DashboardViewModel {
         "width": "100%",
         "height": "100%",
         "importanceFilter": "0,1",
-        "currencyFilter": (function () { debugger; return [self.secondEconomy(), self.firstEconomy()].join(",") })(),
+        "currencyFilter": (function () { return [self.secondEconomy(), self.firstEconomy()].join(",") })(),
         "utm_source": "br.tradingview.com",
         "utm_medium": "widget_new",
         "utm_campaign": "events"
       }))
+    })
+
+    self.refreshedCalendar = ko.observable(true);
+    ko.computed(() => {
+      self.calendarUrl();
+      self.refreshedCalendar(false);
+      setTimeout(function() {
+        self.refreshedCalendar(true);
+      }, 200);
     })
   }
 
