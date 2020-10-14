@@ -112,17 +112,23 @@
     margin-left: -1rem !important;
     margin-right: -1rem !important;
 ">
-      <div class="oj-lg-6  oj-flex-item oj-sm-padding-4x-horizontal">
+      <div class="oj-lg-12  oj-flex-item oj-sm-padding-4x-horizontal">
         <div class="container">
           <h3 data-bind="text: info.name"></h3>
           <p><small data-bind="text: info.description"></small></p>
-          <div class="graph border-black">
-            <span class="top-label" data-bind="text: $parent.firstEconomy"></span>
-            <img data-bind="attr: { 'src': $data.url() }">
-          </div>
-          <div class="graph border-blue">
-            <span class="top-label" data-bind="text: $parent.secondEconomy"></span>
-            <img data-bind="attr: { 'src': $parent.currentEco($parent.secondEconomy()).urls.find((urlIt) => urlIt.name == $data.name).url() }">
+          <div class="oj-flex">
+            <div class="oj-sm-6">
+              <div class="graph border-black">
+                <span class="top-label" data-bind="text: $parent.firstEconomy"></span>
+                <img data-bind="attr: { 'src': $data.url() }">
+              </div>
+            </div>
+            <div class="oj-sm-6">
+              <div class="graph border-blue">
+                <span class="top-label" data-bind="text: $parent.secondEconomy"></span>
+                <img data-bind="attr: { 'src': $parent.currentEco($parent.secondEconomy()).urls.find((urlIt) => urlIt.name == $data.name).url() }">
+              </div>
+            </div>
           </div>
         </div>
         <ul>
