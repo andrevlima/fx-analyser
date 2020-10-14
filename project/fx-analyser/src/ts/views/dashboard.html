@@ -5,14 +5,30 @@
  -->
 <style>
 
-  img {
-    border-right: 4px solid black;
-    border-left: 4px solid #418cf0;
-  }
 
   .graph {
     position: relative;
     display: inline-block;
+  }
+
+  .top-label {
+    display: block;
+    position: absolute;
+    top: 5px;
+    font-weight: bold;
+    color: #464646;
+    left: 10px;
+  }
+
+  .border-blue .top-label {
+    color: #418cf0;
+  }
+
+  .border-blue {
+    border: 2px solid #418cf0;
+  }
+  .border-black {
+    border: 2px solid black;
   }
 
   .left-label {
@@ -33,6 +49,9 @@
     right: 5px;
     font-weight: bold;
   }
+   img {
+     width: 100%;
+   }
 
 
 </style>
@@ -64,20 +83,46 @@
       </div>
     </div>
     <div class="oj-flex">
-      <div class="oj-sm-12" data-bind="visible: currentEco(firstEconomy()).partners.includes(secondEconomy())">
+      <div class="oj-sm-12">
         <h5>Detalhes</h5>
-        <p>Existe parceria comercial entre as divisas (*) isso quer dizer que existe um alto volume de importações e exportações entre elas</p>
+        <p data-bind="visible: currentEco(firstEconomy()).partners.includes(secondEconomy())">Existe parceria comercial entre as divisas (*) isso quer dizer que existe um alto volume de importações e exportações entre elas</p>
+        <p>Verifique mapa de maiores importações e exportações por pais:
+          <div class="oj-flex">
+            <div class="oj-sm-3">
+              <div>
+                <a target="_blank" data-bind="attr: { 'href': 'https://tradingeconomics.com/'+currentEco(firstEconomy()).urlPath+'/exports-by-country' }, text: 'Mapa de exportações (' + currentEco(firstEconomy()).urlPath + ')'"></a>
+              </div>
+              <div>
+                <a target="_blank" data-bind="attr: { 'href': 'https://tradingeconomics.com/'+currentEco(firstEconomy()).urlPath+'/imports-by-country' }, text: 'Mapa de importações (' + currentEco(firstEconomy()).urlPath + ')'"></a>
+              </div>
+            </div>
+            <div class="oj-sm-3">
+              <div>
+                <a target="_blank" data-bind="attr: { 'href': 'https://tradingeconomics.com/'+currentEco(secondEconomy()).urlPath+'/exports-by-country' }, text: 'Mapa de exportações (' + currentEco(secondEconomy()).urlPath + ')'"></a>
+              </div>
+              <div>
+                <a target="_blank" data-bind="attr: { 'href': 'https://tradingeconomics.com/'+currentEco(secondEconomy()).urlPath+'/imports-by-country' }, text: 'Mapa de importações (' + currentEco(secondEconomy()).urlPath + ')'"></a>
+              </div>
+            </div>
+          </div>
+        </p>
       </div>
     </div>
-    <div class="oj-flex" data-bind="foreach: currentEco(firstEconomy()).urls">
-      <div class="oj-lg-6">
+    <div class="oj-flex" data-bind="foreach: currentEco(firstEconomy()).urls" style="
+    margin-left: -1rem !important;
+    margin-right: -1rem !important;
+">
+      <div class="oj-lg-6  oj-flex-item oj-sm-padding-4x-horizontal">
         <div class="container">
-          <h3 data-bind="text: name"></h3>
+          <h3 data-bind="text: info.name"></h3>
           <p><small data-bind="text: info.description"></small></p>
-          <div class="graph">
-            <span class="left-label" data-bind="text: $parent.firstEconomy"></span>
-            <img data-bind="attr: { 'src': $data.url( $parent.currentEco($parent.secondEconomy()).urlPath ) }">
-            <span class="right-label" data-bind="text: $parent.secondEconomy"></span>
+          <div class="graph border-black">
+            <span class="top-label" data-bind="text: $parent.firstEconomy"></span>
+            <img data-bind="attr: { 'src': $data.url() }">
+          </div>
+          <div class="graph border-blue">
+            <span class="top-label" data-bind="text: $parent.secondEconomy"></span>
+            <img data-bind="attr: { 'src': $parent.currentEco($parent.secondEconomy()).urls.find((urlIt) => urlIt.name == $data.name).url() }">
           </div>
         </div>
         <ul>
@@ -98,12 +143,20 @@
       <h3>Calendário</h3>
       <p><small>Calendário económico envolve os pares selecionados acima</small></p>
       <!-- TradingView Widget BEGIN -->
-      <div class="tradingview-widget-container"  style="height: 600px;" data-bind="if: refreshedCalendar">
+      <!-- <div class="tradingview-widget-container"  style="height: 600px; margin-bottom: 100px" data-bind="if: refreshedCalendar">
+        <h3>Trading View</h3>
         <iframe id="calendar-iframe" scrolling="no" allowtransparency="true" frameborder="0" 
         data-bind='attr: { 
-          src: calendarUrl
+          src: calendarTradingViewUrl
         }'
         style="box-sizing: border-box; height: calc(100% - 32px); width: 100%;"></iframe>
+      </div> -->
+      <div class="tradingview-widget-container"  style="height: 600px; margin-bottom: 100px;" data-bind="if: refreshedCalendar">
+        <h3>Investing.com</h3>
+        <iframe style="box-sizing: border-box; height: calc(100% - 32px); width: 100%;" frameborder="0" allowtransparency="true" marginwidth="0" marginheight="0"
+        data-bind='attr: { 
+          src: calendarInvestingUrl
+        }'></iframe>
       </div>
       <!-- TradingView Widget END -->
     </div>
@@ -130,7 +183,7 @@
         <div class="oj-flex">
           <div class="oj-sm-12">
             <div class="tradingview-widget-container">
-              <div id="chart_30" style="height: 400px;"></div>
+              <div id="chart_30" style="height: 600px;"></div>
             </div>
           </div>
         </div>
