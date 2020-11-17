@@ -19,13 +19,21 @@ class DashboardViewModel {
   infoByKey: any;
   calendarInvestingUrl: ko.Computed<string>;
   calendarTradingViewUrl: ko.Computed<string>;
-  
+  switchCurrencies: () => void;
+  loadCalendarInitial: () => void;
+
 
   constructor() {
     const self = this;
 
     self.firstEconomy = ko.observable("USD");
     self.secondEconomy = ko.observable("JPY");
+
+    self.switchCurrencies = function () {
+      const first = self.firstEconomy();
+      self.firstEconomy(self.secondEconomy());
+      self.secondEconomy(first);
+    }
 
     const findTradingView = () => {
       return new Promise(function (resolve, rej) {
@@ -131,9 +139,9 @@ class DashboardViewModel {
         urlPath: "euro-area",
         urls: [
           { name: "balance", info: getInfo("balance"), url: (other) => `${baseUrl}?s=xttbez`, link: (other) => `${tradingEconomicsUrl}/${other}/balance-of-trade` },
+          { name: "interest", info: getInfo("interest"), url: (other) => `${baseUrl}?s=eurr002w`, link: (other) => `${tradingEconomicsUrl}/${other}/interest-rate` },
           { name: "inflation", info: getInfo("inflation"), url: (other) => `${baseUrl}?s=eccpemuy`, link: (other) => `${tradingEconomicsUrl}/${other}/inflation-cpi` },
           { name: "cpi", info: getInfo("cpi"), url: (other) => `${baseUrl}?s=euroareaconpriindcp`, link: (other) => `${tradingEconomicsUrl}/${other}/consumer-price-index-cpi` },
-          { name: "interest", info: getInfo("interest"), url: (other) => `${baseUrl}?s=eurr002w`, link: (other) => `${tradingEconomicsUrl}/${other}/interest-rate` },
           { name: "gdp", info: getInfo("gdp"), url: (other) => `${baseUrl}?s=eugnemuq`, link: (other) => `${tradingEconomicsUrl}/${other}/gdp-growth` },
           { name: "manufactoringPmi", info: getInfo("manufactoringPmi"), url: (other) => `${baseUrl}?s=euroareamanpmi`, link: (other) => `${tradingEconomicsUrl}/${other}/manufacturing-pmi` },
           { name: "servicesPmi", info: getInfo("servicesPmi"), url: (other) => `${baseUrl}?s=euroareamanpmi`, link: (other) => `${tradingEconomicsUrl}/${other}/services-pmi` },
@@ -148,9 +156,9 @@ class DashboardViewModel {
         urlPath: "canada",
         urls: [
           { name: "balance", info: getInfo("balance"), url: (other) => `${baseUrl}?s=catbtotb`, link: (other) => `${tradingEconomicsUrl}/${other}/balance-of-trade` },
+          { name: "interest", info: getInfo("interest"), url: (other) => `${baseUrl}?s=cclr`, link: (other) => `${tradingEconomicsUrl}/${other}/interest-rate` },
           { name: "inflation", info: getInfo("inflation"), url: (other) => `${baseUrl}?s=cacpiyoy`, link: (other) => `${tradingEconomicsUrl}/${other}/inflation-cpi` },
           { name: "cpi", info: getInfo("cpi"), url: (other) => `${baseUrl}?s=canadaconpriindcpi`, link: (other) => `${tradingEconomicsUrl}/${other}/consumer-price-index-cpi` },
-          { name: "interest", info: getInfo("interest"), url: (other) => `${baseUrl}?s=cclr`, link: (other) => `${tradingEconomicsUrl}/${other}/interest-rate` },
           { name: "gdp", info: getInfo("gdp"), url: (other) => `${baseUrl}?s=cge9qoq`, link: (other) => `${tradingEconomicsUrl}/${other}/gdp-growth` },
           { name: "manufactoringPmi", info: getInfo("manufactoringPmi"), url: (other) => `${baseUrl}?s=canadamanpmi`, link: (other) => `${tradingEconomicsUrl}/${other}/manufacturing-pmi` },
           { name: "servicesPmi", info: getInfo("servicesPmi"), url: (other) => `${baseUrl}?s=canadamanpmi`, link: (other) => `${tradingEconomicsUrl}/${other}/services-pmi` },
@@ -165,9 +173,9 @@ class DashboardViewModel {
         urlPath: "united-kingdom",
         urls: [
           { name: "balance", info: getInfo("balance"), url: (other) => `${baseUrl}?s=uktbttba`, link: (other) => `${tradingEconomicsUrl}/${other}/balance-of-trade` },
+          { name: "interest", info: getInfo("interest"), url: (other) => `${baseUrl}?s=ukbrbase`, link: (other) => `${tradingEconomicsUrl}/${other}/interest-rate` },
           { name: "inflation", info: getInfo("inflation"), url: (other) => `${baseUrl}?s=ukrpcjyr`, link: (other) => `${tradingEconomicsUrl}/${other}/inflation-cpi` },
           { name: "cpi", info: getInfo("cpi"), url: (other) => `${baseUrl}?s=unitedkinconpriindcp`, link: (other) => `${tradingEconomicsUrl}/${other}/consumer-price-index-cpi` },
-          { name: "interest", info: getInfo("interest"), url: (other) => `${baseUrl}?s=ukbrbase`, link: (other) => `${tradingEconomicsUrl}/${other}/interest-rate` },
           { name: "gdp", info: getInfo("gdp"), url: (other) => `${baseUrl}?s=ukgrybzq`, link: (other) => `${tradingEconomicsUrl}/${other}/gdp-growth` },
           { name: "manufactoringPmi", info: getInfo("manufactoringPmi"), url: (other) => `${baseUrl}?s=unitedkinmanpmi`, link: (other) => `${tradingEconomicsUrl}/${other}/manufacturing-pmi` },
           { name: "servicesPmi", info: getInfo("servicesPmi"), url: (other) => `${baseUrl}?s=unitedkinmanpmi`, link: (other) => `${tradingEconomicsUrl}/${other}/services-pmi` },
@@ -182,9 +190,9 @@ class DashboardViewModel {
         urlPath: "new-zealand",
         urls: [
           { name: "balance", info: getInfo("balance"), url: (other) => `${baseUrl}?s=nzmtbal`, link: (other) => `${tradingEconomicsUrl}/${other}/balance-of-trade` },
+          { name: "interest", info: getInfo("interest"), url: (other) => `${baseUrl}?s=nzocrs`, link: (other) => `${tradingEconomicsUrl}/${other}/interest-rate` },
           { name: "inflation", info: getInfo("inflation"), url: (other) => `${baseUrl}?s=nzcpiyoy`, link: (other) => `${tradingEconomicsUrl}/${other}/inflation-cpi` },
           { name: "cpi", info: getInfo("cpi"), url: (other) => `${baseUrl}?s=newzealanconpriindcp`, link: (other) => `${tradingEconomicsUrl}/${other}/consumer-price-index-cpi` },
-          { name: "interest", info: getInfo("interest"), url: (other) => `${baseUrl}?s=nzocrs`, link: (other) => `${tradingEconomicsUrl}/${other}/interest-rate` },
           { name: "gdp", info: getInfo("gdp"), url: (other) => `${baseUrl}?s=nzntgdpc`, link: (other) => `${tradingEconomicsUrl}/${other}/gdp-growth` },
           { name: "manufactoringPmi", info: getInfo("manufactoringPmi"), url: (other) => `${baseUrl}?s=newzealanmanpmi`, link: (other) => `${tradingEconomicsUrl}/${other}/manufacturing-pmi` },
           { name: "servicesPmi", info: getInfo("servicesPmi"), url: (other) => `${baseUrl}?s=newzealanmanpmi`, link: (other) => `${tradingEconomicsUrl}/${other}/services-pmi` },
@@ -199,9 +207,9 @@ class DashboardViewModel {
         urlPath: "australia",
         urls: [
           { name: "balance", info: getInfo("balance"), url: (other) => `${baseUrl}?s=auitgsb`, link: (other) => `${tradingEconomicsUrl}/${other}/balance-of-trade` },
+          { name: "interest", info: getInfo("interest"), url: (other) => `${baseUrl}?s=rbatctr`, link: (other) => `${tradingEconomicsUrl}/${other}/interest-rate` },
           { name: "inflation", info: getInfo("inflation"), url: (other) => `${baseUrl}?s=aucpiyoy`, link: (other) => `${tradingEconomicsUrl}/${other}/inflation-cpi` },
           { name: "cpi", info: getInfo("cpi"), url: (other) => `${baseUrl}?s=australiaconpriindcp`, link: (other) => `${tradingEconomicsUrl}/${other}/consumer-price-index-cpi` },
-          { name: "interest", info: getInfo("interest"), url: (other) => `${baseUrl}?s=rbatctr`, link: (other) => `${tradingEconomicsUrl}/${other}/interest-rate` },
           { name: "gdp", info: getInfo("gdp"), url: (other) => `${baseUrl}?s=aunagdpc`, link: (other) => `${tradingEconomicsUrl}/${other}/gdp-growth` },
           { name: "manufactoringPmi", info: getInfo("manufactoringPmi"), url: (other) => `${baseUrl}?s=australiamanpmi`, link: (other) => `${tradingEconomicsUrl}/${other}/manufacturing-pmi` },
           { name: "servicesPmi", info: getInfo("servicesPmi"), url: (other) => `${baseUrl}?s=australiamanpmi`, link: (other) => `${tradingEconomicsUrl}/${other}/services-pmi` },
@@ -216,9 +224,9 @@ class DashboardViewModel {
         urlPath: "japan",
         urls: [
           { name: "balance", info: getInfo("balance"), url: (other) => `${baseUrl}?s=jntbal`, link: (other) => `${tradingEconomicsUrl}/${other}/balance-of-trade` },
+          { name: "interest", info: getInfo("interest"), url: (other) => `${baseUrl}?s=bojdtr`, link: (other) => `${tradingEconomicsUrl}/${other}/interest-rate` },
           { name: "inflation", info: getInfo("inflation"), url: (other) => `${baseUrl}?s=jncpiyoy`, link: (other) => `${tradingEconomicsUrl}/${other}/inflation-cpi` },
           { name: "cpi", info: getInfo("cpi"), url: (other) => `${baseUrl}?s=japanconpriindcpi`, link: (other) => `${tradingEconomicsUrl}/${other}/consumer-price-index-cpi` },
-          { name: "interest", info: getInfo("interest"), url: (other) => `${baseUrl}?s=bojdtr`, link: (other) => `${tradingEconomicsUrl}/${other}/interest-rate` },
           { name: "gdp", info: getInfo("gdp"), url: (other) => `${baseUrl}?s=jgdpagdp`, link: (other) => `${tradingEconomicsUrl}/${other}/gdp-growth` },
           { name: "manufactoringPmi", info: getInfo("manufactoringPmi"), url: (other) => `${baseUrl}?s=japanmanpmi`, link: (other) => `${tradingEconomicsUrl}/${other}/manufacturing-pmi` },
           { name: "servicesPmi", info: getInfo("servicesPmi"), url: (other) => `${baseUrl}?s=japanmanpmi`, link: (other) => `${tradingEconomicsUrl}/${other}/services-pmi` },
@@ -233,9 +241,9 @@ class DashboardViewModel {
         urlPath: "united-states",
         urls: [
           { name: "balance", info: getInfo("balance"), url: (other) => `${baseUrl}?s=ustbtot`, link: (other) => `${tradingEconomicsUrl}/${other}/balance-of-trade` },
+          { name: "interest", info: getInfo("interest"), url: (other) => `${baseUrl}?s=fdtr`, link: (other) => `${tradingEconomicsUrl}/${other}/interest-rate` },
           { name: "inflation", info: getInfo("inflation"), url: (other) => `${baseUrl}?s=cpi+yoy`, link: (other) => `${tradingEconomicsUrl}/${other}/inflation-cpi` },
           { name: "cpi", info: getInfo("cpi"), url: (other) => `${baseUrl}?s=unitedstaconpriindcp`, link: (other) => `${tradingEconomicsUrl}/${other}/consumer-price-index-cpi` },
-          { name: "interest", info: getInfo("interest"), url: (other) => `${baseUrl}?s=fdtr`, link: (other) => `${tradingEconomicsUrl}/${other}/interest-rate` },
           { name: "gdp", info: getInfo("gdp"), url: (other) => `${baseUrl}?s=gdp+cqoq`, link: (other) => `${tradingEconomicsUrl}/${other}/gdp-growth` },
           { name: "manufactoringPmi", info: getInfo("manufactoringPmi"), url: (other) => `${baseUrl}?s=unitedstamanpmi`, link: (other) => `${tradingEconomicsUrl}/${other}/manufacturing-pmi` },
           { name: "servicesPmi", info: getInfo("servicesPmi"), url: (other) => `${baseUrl}?s=unitedstamanpmi`, link: (other) => `${tradingEconomicsUrl}/${other}/services-pmi` },
@@ -251,18 +259,18 @@ class DashboardViewModel {
     }
 
     const countryIdByCurrency = {
-      "EUR":72, "GBP": 4, "USD": 5, "CAD":6, "NZD":43, "AUD":25, "JPY":35, "CHF":12
+      "EUR": 72, "GBP": 4, "USD": 5, "CAD": 6, "NZD": 43, "AUD": 25, "JPY": 35, "CHF": 12
     }
 
     self.calendarInvestingUrl = ko.computed(() => {
-      return "https://sslecal2.forexprostools.com?"+
-      "columns=exc_flags," + "exc_currency," + "exc_importance," + "exc_actual," + "exc_forecast," + "exc_previous" + 
-      "&importance=2,3" + 
-      "&features=datepicker,timezone,timeselector,filters" + 
-      "&countries=" + [countryIdByCurrency[self.secondEconomy()], countryIdByCurrency[self.firstEconomy()]].join(",") + 
-      "&calType=week" + 
-      "&timeZone=12" + 
-      "&lang=12";
+      return "https://sslecal2.forexprostools.com?" +
+        "columns=exc_flags," + "exc_currency," + "exc_importance," + "exc_actual," + "exc_forecast," + "exc_previous" +
+        "&importance=2,3" +
+        "&features=datepicker,timezone,timeselector,filters" +
+        "&countries=" + [countryIdByCurrency[self.secondEconomy()], countryIdByCurrency[self.firstEconomy()]].join(",") +
+        "&calType=week" +
+        "&timeZone=12" +
+        "&lang=12";
     })
 
     self.calendarTradingViewUrl = ko.computed(() => {
@@ -279,12 +287,58 @@ class DashboardViewModel {
       }))
     })
 
+
+    function getCalendarPageDoc() {
+      let iframe: any = document.getElementById('mql5-calendar');
+
+      let doc = null;
+      if (iframe.contentDocument) {
+        doc = iframe.contentDocument;
+      } else if (iframe.contentWindow) {
+        doc = iframe.contentWindow.document;
+      }
+      return doc;
+    }
+
+    function updatePreview(data) {
+      const i = <any>document.getElementById('mql5-calendar');
+      i.src=null;
+      const doc = getCalendarPageDoc();
+
+      doc.open();
+      doc.write(data);
+      doc.close();
+    }
+
+    function loadPage(url) {
+      return $.getJSON(url, function (data) {
+        updatePreview(data.contents);
+      });
+    }
+
+    function loadCalendarInitial() {
+      loadPage('http://api.allorigins.win/get?url=https%3A//www.tradays.com/pt/economic-calendar/widget%3Fmode%3D2%26dateFormat%3DDMY&callback=?').then(function () {
+        setTimeout(function () {
+          const doc = getCalendarPageDoc();
+
+          doc.querySelectorAll(".item").forEach(function (row: any) {
+            if (row.querySelector(".col-currency").innerText.trim() != self.firstEconomy() && row.querySelector(".col-currency").innerText.trim() != self.secondEconomy()) {
+              row.remove()
+            }
+          });
+
+          doc.querySelectorAll(".col-event > a").forEach((a: any) => a.href = a.href.replace(window.location, "https://www.tradays.com/"));
+        }, 1000);
+      })
+    }
+    self.loadCalendarInitial = loadCalendarInitial;
     self.refreshedCalendar = ko.observable(true);
     ko.computed(() => {
       self.calendarInvestingUrl();
       self.calendarTradingViewUrl();
       self.refreshedCalendar(false);
-      setTimeout(function() {
+      // loadCalendarInitial();
+      setTimeout(function () {
         self.refreshedCalendar(true);
       }, 200);
     })
