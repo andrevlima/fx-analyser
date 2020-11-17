@@ -15,9 +15,12 @@ declare class DashboardViewModel {
         manufactoringPmi: string;
     };
     currentEco: (currency: any) => {} | any;
-    calendarUrl: ko.Computed<string>;
     refreshedCalendar: any;
     infoByKey: any;
+    calendarInvestingUrl: ko.Computed<string>;
+    calendarTradingViewUrl: ko.Computed<string>;
+    switchCurrencies: () => void;
+    loadCalendarInitial: () => void;
     constructor();
     /**
      * Optional ViewModel method invoked after the View is inserted into the
