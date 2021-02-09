@@ -337,7 +337,7 @@ class DashboardViewModel {
       self.calendarInvestingUrl();
       self.calendarTradingViewUrl();
       self.refreshedCalendar(false);
-      // loadCalendarInitial();
+       loadCalendarInitial();
       setTimeout(function () {
         self.refreshedCalendar(true);
       }, 200);
