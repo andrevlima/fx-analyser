@@ -3,7 +3,7 @@
 Este é um projeto simples que embebe diversar fontes de dados tais como TradingView, Investing.com e TradingEconomics numa só página. A ideia é prover uma única página para ter um "overview" direto das economias relativas aos pares em questão, através de gráficos dos mais relevantes indicadores para forex trading tais como PIB, Taxa de Juro e entre outros.
 
 ## Utilização
-O primeiro passo é selecionar o par, ex: USD/JPY e depois ficam disponíveis os seguintes indicadores:
+O primeiro passo é [abrir a página](https://andrevlima.github.io/fx-analyser/) e em seguida, selecionar o par, ex: USD/JPY e depois ficam disponíveis os seguintes indicadores:
 
 ### Indicadores
 - PIB - Rácio de crescimento do PIB
