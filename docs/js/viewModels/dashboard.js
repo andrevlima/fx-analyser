@@ -113,10 +113,28 @@ define(["require", "exports", "../accUtils", "knockout", "ojs/ojselectcombobox"]
                         { name: "cpi", info: getInfo("cpi"), url: (other) => `${baseUrl}?s=euroareaconpriindcp`, link: (other) => `${tradingEconomicsUrl}/${other}/consumer-price-index-cpi` },
                         { name: "balance", info: getInfo("balance"), url: (other) => `${baseUrl}?s=xttbez`, link: (other) => `${tradingEconomicsUrl}/${other}/balance-of-trade` },
                         { name: "manufactoringPmi", info: getInfo("manufactoringPmi"), url: (other) => `${baseUrl}?s=euroareamanpmi`, link: (other) => `${tradingEconomicsUrl}/${other}/manufacturing-pmi` },
-                        { name: "servicesPmi", info: getInfo("servicesPmi"), url: (other) => `${baseUrl}?s=euroareamanpmi`, link: (other) => `${tradingEconomicsUrl}/${other}/services-pmi` },
+                        { name: "servicesPmi", info: getInfo("servicesPmi"), url: (other) => `${baseUrl}?s=euroareaserpmi`, link: (other) => `${tradingEconomicsUrl}/${other}/services-pmi` },
                     ],
                     partners: [
                         "USD", "CNY", "CHF"
+                    ]
+                },
+                {
+                    name: "CHF (Suiça)",
+                    currency: "CHF",
+                    urlPath: "switzerland",
+                    urls: [
+                        { name: "unemploymentRate", info: getInfo("unemploymentRate"), url: (other) => `${baseUrl}?s=szueuea`, link: (other) => `${tradingEconomicsUrl}/${other}/unemployment-rate` },
+                        { name: "gdp", info: getInfo("gdp"), url: (other) => `${baseUrl}?s=szgdpcqq`, link: (other) => `${tradingEconomicsUrl}/${other}/gdp-growth` },
+                        { name: "interest", info: getInfo("interest"), url: (other) => `${baseUrl}?s=szlttr`, link: (other) => `${tradingEconomicsUrl}/${other}/interest-rate` },
+                        { name: "inflation", info: getInfo("inflation"), url: (other) => `${baseUrl}?s=szcpiyoy`, link: (other) => `${tradingEconomicsUrl}/${other}/inflation-cpi` },
+                        { name: "cpi", info: getInfo("cpi"), url: (other) => `${baseUrl}?s=switzerlanconpriindc`, link: (other) => `${tradingEconomicsUrl}/${other}/consumer-price-index-cpi` },
+                        { name: "balance", info: getInfo("balance"), url: (other) => `${baseUrl}?s=sztbal`, link: (other) => `${tradingEconomicsUrl}/${other}/balance-of-trade` },
+                        { name: "manufactoringPmi", info: getInfo("manufactoringPmi"), url: (other) => `${baseUrl}?s=switzerlanmanpmi`, link: (other) => `${tradingEconomicsUrl}/${other}/manufacturing-pmi` },
+                        { name: "servicesPmi", info: getInfo("servicesPmi"), url: (other) => `${baseUrl}?s=switzerlanserpmi`, link: (other) => `${tradingEconomicsUrl}/${other}/services-pmi` },
+                    ],
+                    partners: [
+                        "EUR", "USD", "RMB"
                     ]
                 },
                 {
@@ -131,7 +149,7 @@ define(["require", "exports", "../accUtils", "knockout", "ojs/ojselectcombobox"]
                         { name: "cpi", info: getInfo("cpi"), url: (other) => `${baseUrl}?s=canadaconpriindcpi`, link: (other) => `${tradingEconomicsUrl}/${other}/consumer-price-index-cpi` },
                         { name: "balance", info: getInfo("balance"), url: (other) => `${baseUrl}?s=catbtotb`, link: (other) => `${tradingEconomicsUrl}/${other}/balance-of-trade` },
                         { name: "manufactoringPmi", info: getInfo("manufactoringPmi"), url: (other) => `${baseUrl}?s=canadamanpmi`, link: (other) => `${tradingEconomicsUrl}/${other}/manufacturing-pmi` },
-                        { name: "servicesPmi", info: getInfo("servicesPmi"), url: (other) => `${baseUrl}?s=canadamanpmi`, link: (other) => `${tradingEconomicsUrl}/${other}/services-pmi` },
+                        { name: "servicesPmi", info: getInfo("servicesPmi"), url: (other) => `${baseUrl}?s=canadaserpmi`, link: (other) => `${tradingEconomicsUrl}/${other}/services-pmi` },
                     ],
                     partners: [
                         "USD", "CNY", "MZD"
@@ -149,7 +167,7 @@ define(["require", "exports", "../accUtils", "knockout", "ojs/ojselectcombobox"]
                         { name: "cpi", info: getInfo("cpi"), url: (other) => `${baseUrl}?s=unitedkinconpriindcp`, link: (other) => `${tradingEconomicsUrl}/${other}/consumer-price-index-cpi` },
                         { name: "balance", info: getInfo("balance"), url: (other) => `${baseUrl}?s=uktbttba`, link: (other) => `${tradingEconomicsUrl}/${other}/balance-of-trade` },
                         { name: "manufactoringPmi", info: getInfo("manufactoringPmi"), url: (other) => `${baseUrl}?s=unitedkinmanpmi`, link: (other) => `${tradingEconomicsUrl}/${other}/manufacturing-pmi` },
-                        { name: "servicesPmi", info: getInfo("servicesPmi"), url: (other) => `${baseUrl}?s=unitedkinmanpmi`, link: (other) => `${tradingEconomicsUrl}/${other}/services-pmi` },
+                        { name: "servicesPmi", info: getInfo("servicesPmi"), url: (other) => `${baseUrl}?s=unitedkinserpmi`, link: (other) => `${tradingEconomicsUrl}/${other}/services-pmi` },
                     ],
                     partners: [
                         "USD", "EUR", "CNY"
@@ -167,7 +185,7 @@ define(["require", "exports", "../accUtils", "knockout", "ojs/ojselectcombobox"]
                         { name: "cpi", info: getInfo("cpi"), url: (other) => `${baseUrl}?s=newzealanconpriindcp`, link: (other) => `${tradingEconomicsUrl}/${other}/consumer-price-index-cpi` },
                         { name: "balance", info: getInfo("balance"), url: (other) => `${baseUrl}?s=nzmtbal`, link: (other) => `${tradingEconomicsUrl}/${other}/balance-of-trade` },
                         { name: "manufactoringPmi", info: getInfo("manufactoringPmi"), url: (other) => `${baseUrl}?s=newzealanmanpmi`, link: (other) => `${tradingEconomicsUrl}/${other}/manufacturing-pmi` },
-                        { name: "servicesPmi", info: getInfo("servicesPmi"), url: (other) => `${baseUrl}?s=newzealanmanpmi`, link: (other) => `${tradingEconomicsUrl}/${other}/services-pmi` },
+                        { name: "servicesPmi", info: getInfo("servicesPmi"), url: (other) => `${baseUrl}?s=newzealanserpmi`, link: (other) => `${tradingEconomicsUrl}/${other}/services-pmi` },
                     ],
                     partners: [
                         "AUD", "USD", "CNY", "JPY"
@@ -185,7 +203,7 @@ define(["require", "exports", "../accUtils", "knockout", "ojs/ojselectcombobox"]
                         { name: "cpi", info: getInfo("cpi"), url: (other) => `${baseUrl}?s=australiaconpriindcp`, link: (other) => `${tradingEconomicsUrl}/${other}/consumer-price-index-cpi` },
                         { name: "balance", info: getInfo("balance"), url: (other) => `${baseUrl}?s=auitgsb`, link: (other) => `${tradingEconomicsUrl}/${other}/balance-of-trade` },
                         { name: "manufactoringPmi", info: getInfo("manufactoringPmi"), url: (other) => `${baseUrl}?s=australiamanpmi`, link: (other) => `${tradingEconomicsUrl}/${other}/manufacturing-pmi` },
-                        { name: "servicesPmi", info: getInfo("servicesPmi"), url: (other) => `${baseUrl}?s=australiamanpmi`, link: (other) => `${tradingEconomicsUrl}/${other}/services-pmi` },
+                        { name: "servicesPmi", info: getInfo("servicesPmi"), url: (other) => `${baseUrl}?s=australiaserpmi`, link: (other) => `${tradingEconomicsUrl}/${other}/services-pmi` },
                     ],
                     partners: [
                         "CNY", "JPY", "USD", "NZD"
@@ -203,7 +221,7 @@ define(["require", "exports", "../accUtils", "knockout", "ojs/ojselectcombobox"]
                         { name: "cpi", info: getInfo("cpi"), url: (other) => `${baseUrl}?s=japanconpriindcpi`, link: (other) => `${tradingEconomicsUrl}/${other}/consumer-price-index-cpi` },
                         { name: "balance", info: getInfo("balance"), url: (other) => `${baseUrl}?s=jntbal`, link: (other) => `${tradingEconomicsUrl}/${other}/balance-of-trade` },
                         { name: "manufactoringPmi", info: getInfo("manufactoringPmi"), url: (other) => `${baseUrl}?s=japanmanpmi`, link: (other) => `${tradingEconomicsUrl}/${other}/manufacturing-pmi` },
-                        { name: "servicesPmi", info: getInfo("servicesPmi"), url: (other) => `${baseUrl}?s=japanmanpmi`, link: (other) => `${tradingEconomicsUrl}/${other}/services-pmi` },
+                        { name: "servicesPmi", info: getInfo("servicesPmi"), url: (other) => `${baseUrl}?s=japanserpmi`, link: (other) => `${tradingEconomicsUrl}/${other}/services-pmi` },
                     ],
                     partners: [
                         "CNY", "USD", "AUD"
@@ -221,7 +239,25 @@ define(["require", "exports", "../accUtils", "knockout", "ojs/ojselectcombobox"]
                         { name: "cpi", info: getInfo("cpi"), url: (other) => `${baseUrl}?s=unitedstaconpriindcp`, link: (other) => `${tradingEconomicsUrl}/${other}/consumer-price-index-cpi` },
                         { name: "balance", info: getInfo("balance"), url: (other) => `${baseUrl}?s=ustbtot`, link: (other) => `${tradingEconomicsUrl}/${other}/balance-of-trade` },
                         { name: "manufactoringPmi", info: getInfo("manufactoringPmi"), url: (other) => `${baseUrl}?s=unitedstamanpmi`, link: (other) => `${tradingEconomicsUrl}/${other}/manufacturing-pmi` },
-                        { name: "servicesPmi", info: getInfo("servicesPmi"), url: (other) => `${baseUrl}?s=unitedstamanpmi`, link: (other) => `${tradingEconomicsUrl}/${other}/services-pmi` },
+                        { name: "servicesPmi", info: getInfo("servicesPmi"), url: (other) => `${baseUrl}?s=unitedstaserpmi`, link: (other) => `${tradingEconomicsUrl}/${other}/services-pmi` },
+                    ],
+                    partners: [
+                        "EUR", "CAD", "CNY", "MXN", "JPY"
+                    ]
+                },
+                {
+                    name: "SGD (Singapura/China)",
+                    currency: "SGD",
+                    urlPath: "singapore",
+                    urls: [
+                        { name: "unemploymentRate", info: getInfo("unemploymentRate"), url: (other) => `${baseUrl}?s=siqutota`, link: (other) => `${tradingEconomicsUrl}/${other}/unemployment-rate` },
+                        { name: "gdp", info: getInfo("gdp"), url: (other) => `${baseUrl}?s=sgdpqoq`, link: (other) => `${tradingEconomicsUrl}/${other}/gdp-growth` },
+                        { name: "interest", info: getInfo("interest"), url: (other) => `${baseUrl}?s=sibcon`, link: (other) => `${tradingEconomicsUrl}/${other}/interest-rate` },
+                        { name: "inflation", info: getInfo("inflation"), url: (other) => `${baseUrl}?s=sicpiyoy`, link: (other) => `${tradingEconomicsUrl}/${other}/inflation-cpi` },
+                        { name: "cpi", info: getInfo("cpi"), url: (other) => `${baseUrl}?s=singaporeconpriindcp`, link: (other) => `${tradingEconomicsUrl}/${other}/consumer-price-index-cpi` },
+                        { name: "balance", info: getInfo("balance"), url: (other) => `${baseUrl}?s=strde`, link: (other) => `${tradingEconomicsUrl}/${other}/balance-of-trade` },
+                        { name: "manufactoringPmi", info: getInfo("manufactoringPmi"), url: (other) => `${baseUrl}?s=singaporemanpmi`, link: (other) => `${tradingEconomicsUrl}/${other}/manufacturing-pmi` },
+                        { name: "servicesPmi", info: getInfo("servicesPmi"), url: (other) => `${baseUrl}?s=singaporeserpmi`, link: (other) => `${tradingEconomicsUrl}/${other}/services-pmi` },
                     ],
                     partners: [
                         "EUR", "CAD", "CNY", "MXN", "JPY"
