@@ -101,11 +101,11 @@ class DashboardViewModel {
       },
       inflation: {
         name: "Inflacao",
-        description: "Inflação, quanto mais positivo PIOR é para a moeda, economias desenvolvidas é aceitavel até níveis entre os 2% (Maior inflação vem acompanhado de taxas de juros maiores)"
+        description: "Quando aumenta a economia está aquecida, em geral o BC irá aumentar a taxa de juros para arrefecer a economia (desistimular o emprestimo) ou seja, diminuir a inflação, para economias desenvolvidas é aceitavel níveis entre os 2% (Maior inflação, irá atrair taxas de juros maiores)"
       },
       interest: {
         name: "Taxa de Juro",
-        description: "Bom = Maior taxa, mais investimento estrangeiro entra, MELHOR para a moeda\nMau = Menor taxa, menos investimento estrangeiro entra\n(Ter em atencao a inflação, se aumenta muito tem o efeito inverso)"
+        description: "Maior taxa, mais investimento estrangeiro entra (Carry Trading), aumenta demanda pela moeda. Porém, altas taxas podem assinalar alta inflação, o que pode depreciar a moeda também por sua vez. "
       },
       gdp: {
         name: "PIB",
