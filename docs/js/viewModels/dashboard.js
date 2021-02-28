@@ -15,7 +15,7 @@ define(["require", "exports", "../accUtils", "knockout", "ojs/ojselectcombobox"]
                     const interval = setInterval(function () {
                         if (TradingView) {
                             clearInterval(interval);
-                            resolve();
+                            resolve(void (0));
                         }
                     }, 200);
                 });
@@ -54,19 +54,19 @@ define(["require", "exports", "../accUtils", "knockout", "ojs/ojselectcombobox"]
             const baseUrl = "https://d3fy651gv2fhd3.cloudfront.net/charts/embed.png";
             const tradingEconomicsUrl = "https://tradingeconomics.com";
             self.mapKeyToTitle = {
-                balance: "Balanca Comercial",
-                inflation: "Inflacao",
+                balance: "Balança Comercial",
+                inflation: "Inflação",
                 interest: "Taxa de Juros",
                 gdp: "PIB",
                 manufactoringPmi: "Manufactoring PMI",
             };
             self.infoByKey = {
                 balance: {
-                    name: "Balanca Comercial",
-                    description: "Importações versus Exportações, positivo é MELHOR para a moeda, negativo é mau"
+                    name: "Balança Comercial",
+                    description: "Importações VS Exportações, quando a tendência é de subida, ou seja, positiva, MELHOR é para a moeda. O inverso, tendência negativa, PIOR é para a moeda"
                 },
                 inflation: {
-                    name: "Inflacao",
+                    name: "Inflação",
                     description: "Quando aumenta a economia está aquecida, em geral o BC irá aumentar a taxa de juros para arrefecer a economia (desistimular o emprestimo) ou seja, diminuir a inflação, para economias desenvolvidas é aceitavel níveis entre os 2% (Maior inflação, irá atrair taxas de juros maiores)"
                 },
                 interest: {
@@ -78,20 +78,20 @@ define(["require", "exports", "../accUtils", "knockout", "ojs/ojselectcombobox"]
                     description: "Produto interno bruto, sua subida indica um economia forte, MELHOR para a moeda"
                 },
                 manufactoringPmi: {
-                    name: "Manufactoring PMI",
-                    description: "Quão aquecido está o setor industrial, 50 > MELHOR para a moeda"
+                    name: "PMI Industrial",
+                    description: "Quão aquecido está o setor industrial, níveis superiores a 50 > MELHOR para a moeda, significa uma economia aquecida"
                 },
                 servicesPmi: {
-                    name: "Services PMI",
-                    description: "Quão aquecido está o setor de serviços, 50 > MELHOR para a moeda"
+                    name: "PMI Serviços",
+                    description: "Quão aquecido está o setor de serviços, níveis superiores a 50 > MELHOR para a moeda, significa uma economia aquecida"
                 },
                 cpi: {
                     name: "Consumer Price Index (CPI)",
-                    description: ""
+                    description: "Indica a subida ou descida de preço dos bens comumente consumidos numa ecônomia (CPI Basket of Good) pela maioria das pessoas, este indicador ajuda a rastrear a inflação"
                 },
                 unemploymentRate: {
                     name: "Nível de Desemprego",
-                    description: "Quanto MAIOR será PIOR para a moeda, pois o Governo(BC) irá adotar medidas pró pleno emprego, baixando a taxa de juros e no fim depreciando a moeda"
+                    description: "Quanto MAIOR será PIOR para a moeda, pois o Governo(BC) irá adotar medidas pró pleno emprego, baixando a taxa de juros, aumentando as despesas, imprimindo moeda para injetar estimulos ou subsídios que no fim acabam depreciando a moeda"
                 }
             };
             const getInfo = (key) => {
@@ -270,6 +270,11 @@ define(["require", "exports", "../accUtils", "knockout", "ojs/ojselectcombobox"]
             const countryIdByCurrency = {
                 "EUR": 72, "GBP": 4, "USD": 5, "CAD": 6, "NZD": 43, "AUD": 25, "JPY": 35, "CHF": 12
             };
+            function getCurrentBrowserOffsetTimezoneId() {
+                const timezoneByOffset = { "0": "56", "1": "60", "2": "61", "3": "19", "4": "21", "5": "24", "6": "26", "7": "27", "8": "113", "9": "90", "10": "30", "11": "32", "12": "1", "13": "33", "-11": "35", "-10": "3", "-9": "4", "-8": "5", "-7": "6", "-6": "41", "-5": "43", "-4": "46", "-3": "47", "-1": "53" };
+                const currentOffset = new Date().getTimezoneOffset();
+                return timezoneByOffset[currentOffset];
+            }
             self.calendarInvestingUrl = ko.computed(() => {
                 return "https://sslecal2.forexprostools.com?" +
                     "columns=exc_flags," + "exc_currency," + "exc_importance," + "exc_actual," + "exc_forecast," + "exc_previous" +
@@ -277,7 +282,7 @@ define(["require", "exports", "../accUtils", "knockout", "ojs/ojselectcombobox"]
                     "&features=datepicker,timezone,timeselector,filters" +
                     "&countries=" + [countryIdByCurrency[self.secondEconomy()], countryIdByCurrency[self.firstEconomy()]].join(",") +
                     "&calType=week" +
-                    "&timeZone=12" +
+                    "&timeZone=" + getCurrentBrowserOffsetTimezoneId() +
                     "&lang=12";
             });
             self.calendarTradingViewUrl = ko.computed(() => {

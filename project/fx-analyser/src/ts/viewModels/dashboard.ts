@@ -40,7 +40,7 @@ class DashboardViewModel {
         const interval = setInterval(function () {
           if (TradingView) {
             clearInterval(interval);
-            resolve();
+            resolve(void(0));
           }
         }, 200);
       });
@@ -97,7 +97,7 @@ class DashboardViewModel {
     self.infoByKey = {
       balance: {
         name: "Balança Comercial",
-        description: "Importações versus Exportações, positivo é MELHOR para a moeda, negativo é mau"
+        description: "Importações VS Exportações, quando a tendência é de subida, ou seja, positiva, MELHOR é para a moeda. O inverso, tendência negativa, PIOR é para a moeda"
       },
       inflation: {
         name: "Inflação",
