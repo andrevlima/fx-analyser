@@ -57,6 +57,7 @@
 <!-- <div style="width: 400px;position: fixed;/* padding-bottom: 56.25%; */bottom: -157px;right: 0px;z-index: 1000;height: 400px;"><iframe src="https://player.cnbc.com/p/gZWlPC/cnbc_global?playertype=synd&amp;byGuid=3000628768" style="border: 0; top: 0; left: 0; width: 100%; height: 100%; position: absolute;" allowfullscreen scrolling="no" allow="encrypted-media"></iframe></div> -->
 <div class="oj-hybrid-padding">
   <div>
+    <!-- Seletor -->
     <div class="oj-flex">
       <div class="oj-sm-12">
         <h5>Moedas</h5>
@@ -83,6 +84,8 @@
         </oj-combobox-one>
       </div>
     </div>
+    
+    <!-- Detalhes -->
     <div class="oj-flex">
       <div class="oj-sm-12">
         <h5>Detalhes</h5>
@@ -109,45 +112,8 @@
         </p>
       </div>
     </div>
-    <h1>Indicadores</h1>
-    <p>Principais indicadores econômicos para FX, também estão ordenados por relevância, é sábio lembrar que dependendo do contexto atual da ecônomia e/ou tipo de ecônomia os indicadores podem ter relevâncias diferentes</p>
-    <div class="oj-flex" data-bind="foreach: currentEco(firstEconomy()).urls" style="
-    margin-left: -1rem !important;
-    margin-right: -1rem !important;
-">
-      <div class="oj-lg-12  oj-flex-item oj-sm-padding-4x-horizontal">
-        <div class="container">
-          <h3 data-bind="text: info.name"></h3>
-          <p><small data-bind="text: info.description"></small></p>
-          <div class="oj-flex">
-            <div class="oj-sm-6">
-              <div class="graph border-black">
-                <span class="top-label" data-bind="text: $parent.firstEconomy"></span>
-                <img data-bind="attr: { 'src': $data.url() }">
-              </div>
-            </div>
-            <div class="oj-sm-6">
-              <div class="graph border-blue">
-                <span class="top-label" data-bind="text: $parent.secondEconomy"></span>
-                <img data-bind="attr: { 'src': $parent.currentEco($parent.secondEconomy()).urls.find((urlIt) => urlIt.name == $data.name).url() }">
-              </div>
-            </div>
-          </div>
-        </div>
-        <ul>
-          <li style="display: inline-block;padding: 0px 0px;">
-            Clique para ver detalhes do
-          </li>
-          <li style="display: inline-block;padding: 0px 0px;">
-            <a target="_blank" data-bind="attr: { href: $data.link($parent.currentEco($parent.firstEconomy()).urlPath) }"><span data-bind="text: $parent.firstEconomy"></span></a>
-          </li>
-          <li style="display: inline-block;padding: 0px 0px;">ou</li>
-          <li style="display: inline-block;">
-            <a target="_blank" data-bind="attr: { href: $data.link($parent.currentEco($parent.secondEconomy()).urlPath) }"><span data-bind="text: $parent.secondEconomy"></span></a>
-          </li>
-        </ul>
-      </div>
-    </div>
+
+    <!-- Calendario -->
     <div class="oj-sm-12">
       <h3>Calendário</h3>
       <p><small>Calendário económico envolve os pares selecionados acima</small></p>
@@ -172,6 +138,51 @@
       </div>
       <!-- TradingView Widget END -->
     </div>
+
+    <!-- Indicadores -->
+    <div>
+      <h1>Indicadores</h1>
+      <p>Principais indicadores econômicos para FX, também estão ordenados por relevância, é sábio lembrar que dependendo do contexto atual da ecônomia e/ou tipo de ecônomia os indicadores podem ter relevâncias diferentes</p>
+      <div class="oj-flex" data-bind="foreach: currentEco(firstEconomy()).urls" style="
+      margin-left: -1rem !important;
+      margin-right: -1rem !important;
+  ">
+        <div class="oj-lg-12  oj-flex-item oj-sm-padding-4x-horizontal">
+          <div class="container">
+            <h3 data-bind="text: info.name"></h3>
+            <p><small data-bind="text: info.description"></small></p>
+            <div class="oj-flex">
+              <div class="oj-sm-6">
+                <div class="graph border-black">
+                  <span class="top-label" data-bind="text: $parent.firstEconomy"></span>
+                  <img data-bind="attr: { 'src': $data.url() }">
+                </div>
+              </div>
+              <div class="oj-sm-6">
+                <div class="graph border-blue">
+                  <span class="top-label" data-bind="text: $parent.secondEconomy"></span>
+                  <img data-bind="attr: { 'src': $parent.currentEco($parent.secondEconomy()).urls.find((urlIt) => urlIt.name == $data.name).url() }">
+                </div>
+              </div>
+            </div>
+          </div>
+          <ul>
+            <li style="display: inline-block;padding: 0px 0px;">
+              Clique para ver detalhes do
+            </li>
+            <li style="display: inline-block;padding: 0px 0px;">
+              <a target="_blank" data-bind="attr: { href: $data.link($parent.currentEco($parent.firstEconomy()).urlPath) }"><span data-bind="text: $parent.firstEconomy"></span></a>
+            </li>
+            <li style="display: inline-block;padding: 0px 0px;">ou</li>
+            <li style="display: inline-block;">
+              <a target="_blank" data-bind="attr: { href: $data.link($parent.currentEco($parent.secondEconomy()).urlPath) }"><span data-bind="text: $parent.secondEconomy"></span></a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Graficos -->
     <div class="oj-flex">
       <div class="oj-sm-12">
         <h3>Preços e Gráficos</h3>
@@ -201,6 +212,7 @@
         </div>
       </div>
     </div>
+
     <div class="oj-flex">
       <div class="oj-sm-12">
         <h6>Mapa</h6>
