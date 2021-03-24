@@ -22,9 +22,20 @@ class DashboardViewModel {
   switchCurrencies: () => void;
   loadCalendarInitial: () => void;
 
+  public selectedCalendarView: ko.Observable<string>;
+  calendarViews: ArrayDataProvider<string, string>;
 
   constructor() {
     const self = this;
+
+    self.selectedCalendarView = ko.observable("week");
+
+    self.calendarViews = new ArrayDataProvider([
+      { name: "Hoje", id: "today" },
+      { name: "Esta Semana", id: "week" },
+      { name: "Tudo Nesta Semana", id: "allThisWeek" },
+    ], { keyAttributes: "id" });
+
 
     self.firstEconomy = ko.observable("USD");
     self.secondEconomy = ko.observable("JPY");
@@ -317,12 +328,27 @@ class DashboardViewModel {
     }
 
     self.calendarInvestingUrl = ko.computed(() => {
+
+      const timeframe = () => {
+        switch (self.selectedCalendarView()) {
+          case "week":
+          case "allThisWeek":
+            return "week";
+            break;
+          case "today":
+            return "day"
+            break;
+          default:
+            break;
+        }
+      }
+
       return "https://sslecal2.forexprostools.com?" +
         "columns=exc_flags," + "exc_currency," + "exc_importance," + "exc_actual," + "exc_forecast," + "exc_previous" +
         "&importance=2,3" +
         "&features=datepicker,timezone,timeselector,filters" +
-        "&countries=" + [countryIdByCurrency[self.secondEconomy()], countryIdByCurrency[self.firstEconomy()]].join(",") +
-        "&calType=week" +
+        (self.selectedCalendarView() != "allThisWeek" ? "&countries=" + [countryIdByCurrency[self.secondEconomy()], countryIdByCurrency[self.firstEconomy()]].join(",") : "") +
+        "&calType=" + timeframe() +
         "&timeZone=" + getCurrentBrowserOffsetTimezoneId() +
         "&lang=12";
     })

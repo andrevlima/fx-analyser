@@ -21,6 +21,8 @@ declare class DashboardViewModel {
     calendarTradingViewUrl: ko.Computed<string>;
     switchCurrencies: () => void;
     loadCalendarInitial: () => void;
+    selectedCalendarView: ko.Observable<string>;
+    calendarViews: ArrayDataProvider<string, string>;
     constructor();
     /**
      * Optional ViewModel method invoked after the View is inserted into the

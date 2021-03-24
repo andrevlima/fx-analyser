@@ -117,6 +117,16 @@
     <div class="oj-sm-12">
       <h3>Calendário</h3>
       <p><small>Calendário económico envolve os pares selecionados acima</small></p>
+
+      <oj-tab-bar selection="{{selectedCalendarView}}"  data="[[calendarViews]]" edge="top">
+        <template slot="itemTemplate" data-oj-as="item">
+          <li :class="[[{'oj-disabled' : item.data.disabled === 'true'}]]">
+            <a href="#">
+              <oj-bind-text value="[[item.data.name]]"> </oj-bind-text>
+            </a>
+          </li>
+        </template>
+      </oj-tab-bar>
       <!-- <oj-button on-oj-action='[[loadCalendarInitial]]'>
         Aplicar Filtro
       </oj-button> -->
