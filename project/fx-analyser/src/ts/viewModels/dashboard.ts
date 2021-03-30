@@ -149,16 +149,10 @@ class DashboardViewModel {
       }
     }
 
-    const listOfMoreInfoPerItemName = {
-      // "unemploymentRate": function() {
-      // },
-      // "inflation": function() {
-      // },
-      // "interest": function() {
-      // }
-      "balance": function (economy) {
+    const createServiceCaller = (apiPath) => {
+      return function (economy) {
         const urlPath = economy.urlPath;
-        return fetch("http://localhost:3000/api/v1/balance-of-trades?target=" + urlPath)
+        return fetch("http://localhost:3000"+apiPath+"?target=" + urlPath)
           .then(request => request.json())
           .then(function (results) {
             let firstNotPublished: any = {};
@@ -178,6 +172,14 @@ class DashboardViewModel {
             };
           })
       }
+    } 
+
+
+    const listOfMoreInfoPerItemName = {
+      "balance": createServiceCaller("/api/v1/balance-of-trades"),
+      "interest": createServiceCaller("/api/v1/interest-rate"),
+      "unemploymentRate": createServiceCaller("/api/v1/unemployment-rate"),
+      "inflation": createServiceCaller("/api/v1/inflation-rate"),
     }
 
     self.moreInfoIndicator = (economy: any, target: string) => {
