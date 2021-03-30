@@ -2,6 +2,9 @@ const express = require('express')
 const app = express()
 const port = 3000;
 const puppeteer = require('puppeteer');
+var cors = require('cors');
+
+app.use(cors());
 
 // APIs
 require('./api/v1/balance-of-trades').bootstrap({

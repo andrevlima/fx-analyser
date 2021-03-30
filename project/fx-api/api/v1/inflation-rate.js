@@ -6,7 +6,9 @@ exports.bootstrap = (dependencies) => {
 
     const { app, puppeteer } = dependencies;
 
-    app.get(`${suffix}/inflation-rate`, (req, res) => {
+    const endpoint = `${suffix}/inflation-rate`;
+    console.log(`Registered endpoint: ${endpoint}`);
+    app.get(endpoint, (req, res) => {
         const target = req.query.target;
 
         console.log(`Inflation - request received - query target ${target}`);

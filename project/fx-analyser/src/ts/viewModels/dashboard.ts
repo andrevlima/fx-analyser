@@ -24,6 +24,8 @@ class DashboardViewModel {
 
   public selectedCalendarView: ko.Observable<string>;
   calendarViews: ArrayDataProvider<string, string>;
+  moreInfoIndicator: (economy: any, target: string) => void;
+  getSecondEconomy: () => void;
 
   constructor() {
     const self = this;
@@ -51,7 +53,7 @@ class DashboardViewModel {
         const interval = setInterval(function () {
           if (TradingView) {
             clearInterval(interval);
-            resolve(void(0));
+            resolve(void (0));
           }
         }, 200);
       });
@@ -134,7 +136,7 @@ class DashboardViewModel {
         name: "Consumer Price Index (CPI)",
         description: "Indica a subida ou descida de preço dos bens comumente consumidos numa ecônomia (CPI Basket of Good) pela maioria das pessoas, este indicador ajuda a rastrear a inflação"
       },
-      unemploymentRate:  {
+      unemploymentRate: {
         name: "Nível de Desemprego",
         description: "Quanto MAIOR será PIOR para a moeda, pois o Governo(BC) irá adotar medidas pró pleno emprego, baixando a taxa de juros, aumentando as despesas, imprimindo moeda para injetar estimulos ou subsídios que no fim acabam depreciando a moeda"
       }
@@ -145,6 +147,54 @@ class DashboardViewModel {
       return info || {
         name: key
       }
+    }
+
+    const listOfMoreInfoPerItemName = {
+      // "unemploymentRate": function() {
+      // },
+      // "inflation": function() {
+      // },
+      // "interest": function() {
+      // }
+      "balance": function (economy) {
+        const urlPath = economy.urlPath;
+        return fetch("http://localhost:3000/api/v1/balance-of-trades?target=" + urlPath)
+          .then(request => request.json())
+          .then(function (results) {
+            let firstNotPublished: any = {};
+            let lastPublished: any = {};
+
+            for (const result of results) {
+              if (result.actual == "") {
+                firstNotPublished = result;
+                break;
+              }
+              lastPublished = result;
+            }
+
+            return {
+              current: lastPublished,
+              next: firstNotPublished
+            };
+          })
+      }
+    }
+
+    self.moreInfoIndicator = (economy: any, target: string) => {
+      const info = ko.observable();
+
+      const load = () => {
+        if (listOfMoreInfoPerItemName[target]) {
+          listOfMoreInfoPerItemName[target](economy).then((infoStr) => {
+            info(infoStr);
+          });
+        }
+      }
+
+      return ko.pureComputed(() => {
+        if(!info()) load()
+        return info();
+      } );
     }
 
     self.economies = [
@@ -312,6 +362,16 @@ class DashboardViewModel {
       }
     ];
 
+    self.getSecondEconomy = () => {
+      self.currentEco(self.secondEconomy());
+    }
+
+    self.economies.forEach((economy) => {
+      economy.urls.forEach(indicator => {
+        indicator.moreInfo = self.moreInfoIndicator(economy, indicator.name)
+      });
+    })
+
     self.currentEco = (currency) => {
       return self.economies.find((e: any) => e.currency == currency);
     }
@@ -321,10 +381,10 @@ class DashboardViewModel {
     }
 
     function getCurrentBrowserOffsetTimezoneId() {
-      const timezoneByOffset = {"0":"56","1":"60","2":"61","3":"19","4":"21","5":"24","6":"26","7":"27","8":"113","9":"90","10":"30","11":"32","12":"1","13":"33","-11":"35","-10":"3","-9":"4","-8":"5","-7":"6","-6":"41","-5":"43","-4":"46","-3":"47","-1":"53"};
+      const timezoneByOffset = { "0": "56", "1": "60", "2": "61", "3": "19", "4": "21", "5": "24", "6": "26", "7": "27", "8": "113", "9": "90", "10": "30", "11": "32", "12": "1", "13": "33", "-11": "35", "-10": "3", "-9": "4", "-8": "5", "-7": "6", "-6": "41", "-5": "43", "-4": "46", "-3": "47", "-1": "53" };
       const currentOffset = new Date().getTimezoneOffset();
-        
-        return timezoneByOffset[currentOffset];
+
+      return timezoneByOffset[currentOffset];
     }
 
     self.calendarInvestingUrl = ko.computed(() => {
@@ -382,7 +442,7 @@ class DashboardViewModel {
 
     function updatePreview(data) {
       const i = <any>document.getElementById('mql5-calendar');
-      i.src=null;
+      i.src = null;
       const doc = getCalendarPageDoc();
 
       doc.open();
@@ -417,7 +477,7 @@ class DashboardViewModel {
       self.calendarInvestingUrl();
       self.calendarTradingViewUrl();
       self.refreshedCalendar(false);
-       loadCalendarInitial();
+      loadCalendarInitial();
       setTimeout(function () {
         self.refreshedCalendar(true);
       }, 200);

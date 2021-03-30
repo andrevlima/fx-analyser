@@ -6,9 +6,11 @@ exports.bootstrap = (dependencies) => {
 
     const { app, puppeteer } = dependencies;
 
-    app.get(`${suffix}/unemployment-rate`, (req, res) => {
+    const endpoint = `${suffix}/unemployment-rate`
+    console.log(`Registered endpoint: ${endpoint}`);
+    app.get(endpoint, (req, res) => {
         const target = req.query.target;
-
+            
         console.log(`UR - request received - query target ${target}`);
 
         (async () => {

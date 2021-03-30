@@ -6,7 +6,9 @@ exports.bootstrap = (dependencies) => {
 
     const { app, puppeteer } = dependencies;
 
-    app.get(`${suffix}/balance-of-trades`, (req, res) => {
+    const endpoint = `${suffix}/balance-of-trades`;
+    console.log(`Registered endpoint: ${endpoint}`);
+    app.get(endpoint, (req, res) => {
         const target = req.query.target;
 
         console.log(`BoT - request received - query target ${target}`);

@@ -166,12 +166,20 @@
                 <div class="graph border-black">
                   <span class="top-label" data-bind="text: $parent.firstEconomy"></span>
                   <img data-bind="attr: { 'src': $data.url() }">
+                  <div data-bind="if: $data.moreInfo">
+                    <div><b>Última Divulgação: </b><label data-bind="text: $data.moreInfo().current.details.fromNow"></label> </div>
+                    <div><b>Próxima Divulgação: </b><label data-bind="text: $data.moreInfo().next.details.fromNow"></label> </div>  
+                  </div>
                 </div>
               </div>
               <div class="oj-sm-6">
                 <div class="graph border-blue">
                   <span class="top-label" data-bind="text: $parent.secondEconomy"></span>
                   <img data-bind="attr: { 'src': $parent.currentEco($parent.secondEconomy()).urls.find((urlIt) => urlIt.name == $data.name).url() }">
+                  <div data-bind="if: $parent.currentEco($parent.secondEconomy()).urls.find((urlIt) => urlIt.name == $data.name).moreInfo">
+                    <div><b>Última Divulgação: </b><label data-bind="text: $parent.currentEco($parent.secondEconomy()).urls.find((urlIt) => urlIt.name == $data.name).moreInfo().current.details.fromNow"></label> </div>
+                    <div><b>Próxima Divulgação: </b><label data-bind="text: $parent.currentEco($parent.secondEconomy()).urls.find((urlIt) => urlIt.name == $data.name).moreInfo().next.details.fromNow"></label> </div>  
+                  </div>
                 </div>
               </div>
             </div>
