@@ -26,6 +26,7 @@ class DashboardViewModel {
   calendarViews: ArrayDataProvider<string, string>;
   moreInfoIndicator: (economy: any, target: string) => void;
   getSecondEconomy: () => void;
+  getCurrentBrowserOffsetTimezoneId: () => any;
 
   constructor() {
     const self = this;
@@ -176,6 +177,7 @@ class DashboardViewModel {
 
 
     const listOfMoreInfoPerItemName = {
+      
       "balance": createServiceCaller("/api/v1/balance-of-trades"),
       "interest": createServiceCaller("/api/v1/interest-rate"),
       "unemploymentRate": createServiceCaller("/api/v1/unemployment-rate"),
@@ -384,10 +386,12 @@ class DashboardViewModel {
 
     function getCurrentBrowserOffsetTimezoneId() {
       const timezoneByOffset = { "0": "56", "1": "60", "2": "61", "3": "19", "4": "21", "5": "24", "6": "26", "7": "27", "8": "113", "9": "90", "10": "30", "11": "32", "12": "1", "13": "33", "-11": "35", "-10": "3", "-9": "4", "-8": "5", "-7": "6", "-6": "41", "-5": "43", "-4": "46", "-3": "47", "-1": "53" };
-      const currentOffset = new Date().getTimezoneOffset();
+      const currentOffset = (new Date().getTimezoneOffset() / 60) * -1;
 
       return timezoneByOffset[currentOffset];
     }
+
+    self.getCurrentBrowserOffsetTimezoneId = getCurrentBrowserOffsetTimezoneId;
 
     self.calendarInvestingUrl = ko.computed(() => {
 
