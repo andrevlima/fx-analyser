@@ -47,10 +47,28 @@ exports.bootstrap = (dependencies) => {
                 }).toArray()
             });
 
+            const numberNormalizer = (n) => Number(String(n).match(/\-|[0-9]+\.|[0-9]+/g).join(""));
+
+            let lastRow = {};
             tableJSON.forEach((row) => {
                 row.details = {
                     fromNow: moment(`${row.date} ${row.time}`, "YYYY-MM-DD hh:mm A").fromNow()
                 }
+
+                
+                if(row.actual == "" && lastRow.actual) {
+                    lastRow.details.current = true;
+                    row.details.next = true;
+
+
+                    lastRow.status = numberNormalizer(lastRow.actual) > numberNormalizer(lastRow.consensus || lastRow.actual) ?
+                                     "positive" :
+                                     numberNormalizer(lastRow.actual) < numberNormalizer(lastRow.consensus || lastRow.actual) ?
+                                     "negative" :
+                                     /* else */
+                                     "neutral";
+                }
+                lastRow = row;
             })
 
             console.log(`Inflation - webcrawling finished - query target ${target}`);

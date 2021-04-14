@@ -84,7 +84,7 @@
         </oj-combobox-one>
       </div>
     </div>
-    
+
     <!-- Detalhes -->
     <div class="oj-flex">
       <div class="oj-sm-12">
@@ -118,7 +118,7 @@
       <h3>Calendário</h3>
       <p><small>Calendário económico envolve os pares selecionados acima</small></p>
 
-      <oj-tab-bar selection="{{selectedCalendarView}}"  data="[[calendarViews]]" edge="top">
+      <oj-tab-bar selection="{{selectedCalendarView}}" data="[[calendarViews]]" edge="top">
         <template slot="itemTemplate" data-oj-as="item">
           <li :class="[[{'oj-disabled' : item.data.disabled === 'true'}]]">
             <a href="#">
@@ -150,6 +150,48 @@
     </div>
 
     <!-- Indicadores -->
+    <style>
+      .bad-status {
+        background: #ffdcdc;
+      }
+      .good-status {
+        background: #dcffe1;
+      }
+    </style>
+    <!-- params: { economy, chartClass } -->
+    <script type="text/html" id="tplChart">
+      <div class="graph " data-bind="class: params.chartClass">
+        <span class="top-label" data-bind="text: params.economyId"></span>
+        <img data-bind="attr: { 'src': params.indicatorUrl.url() }">
+
+        <!-- ko if: params.indicatorUrl.moreInfo-->
+
+        <div class="oj-flex" data-bind="css: { 'bad-status' : params.indicatorUrl.moreInfo().current.status == 'negative' , 'good-status': params.indicatorUrl.moreInfo().current.status == 'positive' }">
+          <div class="oj-auto">
+            <!-- ko if: params.indicatorUrl.moreInfo().current.status == 'positive' -->
+            <span style="color: green">▲</span>
+            <!-- /ko -->
+            <!-- ko if: params.indicatorUrl.moreInfo().current.status == 'negative' -->
+            <span style="color: red">▼</span>
+            <!-- /ko -->
+          </div>
+          <div class="oj-sm-6">
+            <div >
+              <div><b style="color: gray">Última Divulgação: </b>
+                <label data-bind="text: params.indicatorUrl.moreInfo().current.details.fromNow"></label>
+                (<label data-bind="text: params.indicatorUrl.moreInfo().current.reference"></label>)
+              </div>
+              <div><b>Próxima Divulgação: </b>
+                <label data-bind="text: params.indicatorUrl.moreInfo().next.details.fromNow"></label>
+                (<label data-bind="text: params.indicatorUrl.moreInfo().next.reference"></label>)
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- /ko -->
+      </div>
+    </script>
     <div>
       <h1>Indicadores</h1>
       <p>Principais indicadores econômicos para FX, também estão ordenados por relevância, é sábio lembrar que dependendo do contexto atual da ecônomia e/ou tipo de ecônomia os indicadores podem ter relevâncias diferentes</p>
@@ -163,24 +205,11 @@
             <p><small data-bind="text: info.description"></small></p>
             <div class="oj-flex">
               <div class="oj-sm-6">
-                <div class="graph border-black">
-                  <span class="top-label" data-bind="text: $parent.firstEconomy"></span>
-                  <img data-bind="attr: { 'src': $data.url() }">
-                  <div data-bind="if: $data.moreInfo">
-                    <div><b>Última Divulgação: </b><label data-bind="text: $data.moreInfo().current.details.fromNow"></label> </div>
-                    <div><b>Próxima Divulgação: </b><label data-bind="text: $data.moreInfo().next.details.fromNow"></label> </div>  
-                  </div>
-                </div>
+                <div data-bind="template: { name: 'tplChart', data: { economyId: $parent.firstEconomy, indicatorUrl: $data, chartClass: 'border-black' }, as: 'params' }"></div>
               </div>
               <div class="oj-sm-6">
-                <div class="graph border-blue">
-                  <span class="top-label" data-bind="text: $parent.secondEconomy"></span>
-                  <img data-bind="attr: { 'src': $parent.currentEco($parent.secondEconomy()).urls.find((urlIt) => urlIt.name == $data.name).url() }">
-                  <div data-bind="if: $parent.currentEco($parent.secondEconomy()).urls.find((urlIt) => urlIt.name == $data.name).moreInfo">
-                    <div><b>Última Divulgação: </b><label data-bind="text: $parent.currentEco($parent.secondEconomy()).urls.find((urlIt) => urlIt.name == $data.name).moreInfo().current.details.fromNow"></label> </div>
-                    <div><b>Próxima Divulgação: </b><label data-bind="text: $parent.currentEco($parent.secondEconomy()).urls.find((urlIt) => urlIt.name == $data.name).moreInfo().next.details.fromNow"></label> </div>  
-                  </div>
-                </div>
+                <div data-bind="template: { name: 'tplChart', data: { economyId: $parent.secondEconomy, indicatorUrl: $parent.currentEco($parent.secondEconomy()).urls.find((urlIt) => urlIt.name == $data.name), chartClass: 'border-blue' }, as: 'params' }"></div>
+        
               </div>
             </div>
           </div>

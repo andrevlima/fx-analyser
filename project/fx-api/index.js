@@ -19,6 +19,9 @@ require('./api/v1/unemployment-rate').bootstrap({
 require('./api/v1/inflation-rate').bootstrap({
     puppeteer, app
 })
+require('./api/v1/gdp-growth-rate').bootstrap({
+    puppeteer, app
+})
 
 
 app.listen(port, () => console.log(`Economic Statistics server listening on port ${port}!`))
