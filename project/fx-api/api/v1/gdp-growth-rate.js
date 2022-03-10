@@ -60,10 +60,12 @@ exports.bootstrap = (dependencies) => {
                     lastRow.details.current = true;
                     row.details.next = true;
 
+                    const currentValue = numberNormalizer(lastRow.actual || lastRow.consensus);
+                    const previousValue = numberNormalizer(lastRow.previous);
 
-                    lastRow.status = numberNormalizer(lastRow.actual || lastRow.consensus) > numberNormalizer(lastRow.previous) ?
+                    lastRow.status = currentValue > previousValue ?
                                      "positive" :
-                                     numberNormalizer(lastRow.actual || lastRow.consensus) < numberNormalizer(lastRow.previous) ?
+                                     currentValue < previousValue ?
                                      "negative" :
                                      /* else */
                                      "neutral";

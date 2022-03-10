@@ -59,13 +59,15 @@ exports.bootstrap = (dependencies) => {
                     lastRow.details.current = true;
                     row.details.next = true;
 
+                    const currentValue = numberNormalizer(lastRow.actual || lastRow.consensus);
+                    const previousValue = numberNormalizer(lastRow.previous);
 
-                    lastRow.status = numberNormalizer(lastRow.actual) > numberNormalizer(lastRow.consensus || lastRow.actual) ?
-                                    "negative" :
-                                    numberNormalizer(lastRow.actual) < numberNormalizer(lastRow.consensus || lastRow.actual) ?
-                                    "positive" :
-                                    /* else */
-                                    "neutral";
+                    lastRow.status = currentValue > previousValue ?
+                                     "positive" :
+                                     currentValue < previousValue ?
+                                     "negative" :
+                                     /* else */
+                                     "neutral";
                 }
                 lastRow = row;
             })
