@@ -61,9 +61,9 @@ exports.bootstrap = (dependencies) => {
                     row.details.next = true;
 
 
-                    lastRow.status = numberNormalizer(lastRow.actual) > numberNormalizer(lastRow.consensus || lastRow.actual) ?
+                    lastRow.status = numberNormalizer(lastRow.actual || lastRow.consensus) > numberNormalizer(lastRow.previous) ?
                                      "positive" :
-                                     numberNormalizer(lastRow.actual) < numberNormalizer(lastRow.consensus || lastRow.actual) ?
+                                     numberNormalizer(lastRow.actual || lastRow.consensus) < numberNormalizer(lastRow.previous) ?
                                      "negative" :
                                      /* else */
                                      "neutral";
