@@ -23,3 +23,6 @@ Os gráficos são do tradingview.com, nos períodos: Mensal, Semanal, Diário, 3
 
 ### Mapa 
 Mapa provido pelo tradingview.com que mostra o desenvolvimento da moeda no período diário.
+
+### Inciar 
+Se quiser "correr" o projeto localmente deverá `npm i` nos dois diretórios do projeto `project/fx-analyser` e `project/fx-api` após isso basta correr o batch `run.bat` presente na raiz deste repositório.
