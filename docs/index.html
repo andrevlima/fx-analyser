@@ -64,12 +64,15 @@
           <div class="oj-web-applayout-max-width oj-flex-bar oj-sm-align-items-center">
             <!-- Offcanvas toggle button -->
             <div class="oj-flex-bar-start oj-md-hide">
-              
+              <oj-button id="drawerToggleButton" class="oj-button-lg" on-oj-action="[[toggleDrawer]]" chroming="borderless" display="icons">
+                <span slot="startIcon" class="oj-web-applayout-offcanvas-icon"></span>
+                <span>Application Navigation</span>
+              </oj-button>
             </div>
             <div class="oj-flex-bar-middle oj-sm-align-items-baseline">
               <!-- <span role="img" class="oj-icon demo-oracle-icon" title="Oracle Logo" alt="Oracle Logo"></span> -->
               <div>
-                <h1 class="oj-web-applayout-header-title" title="Application Name"><oj-bind-text value="[[appName]]"></oj-bind-text></h1>
+                <h1 class="oj-sm-only-hide oj-web-applayout-header-title" title="Application Name"><oj-bind-text value="[[appName]]"></oj-bind-text></h1>
                 <small title="Application Name">Compare Economies Directly</small>
               </div>
               <style>
