@@ -23,6 +23,9 @@ declare class DashboardViewModel {
     loadCalendarInitial: () => void;
     selectedCalendarView: ko.Observable<string>;
     calendarViews: ArrayDataProvider<string, string>;
+    moreInfoIndicator: (economy: any, target: string) => void;
+    getSecondEconomy: () => void;
+    getCurrentBrowserOffsetTimezoneId: () => any;
     constructor();
     /**
      * Optional ViewModel method invoked after the View is inserted into the

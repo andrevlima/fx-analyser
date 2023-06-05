@@ -1,8 +1,3 @@
-<!--
- Copyright (c) 2014, 2020, Oracle and/or its affiliates.
- Licensed under The Universal Permissive License (UPL), Version 1.0
- as shown at https://oss.oracle.com/licenses/upl/
- -->
 <style>
   .graph {
     position: relative;
@@ -84,7 +79,7 @@
         </oj-combobox-one>
       </div>
     </div>
-    
+
     <!-- Detalhes -->
     <div class="oj-flex">
       <div class="oj-sm-12">
@@ -118,7 +113,7 @@
       <h3>Calendário</h3>
       <p><small>Calendário económico envolve os pares selecionados acima</small></p>
 
-      <oj-tab-bar selection="{{selectedCalendarView}}"  data="[[calendarViews]]" edge="top">
+      <oj-tab-bar selection="{{selectedCalendarView}}" data="[[calendarViews]]" edge="top">
         <template slot="itemTemplate" data-oj-as="item">
           <li :class="[[{'oj-disabled' : item.data.disabled === 'true'}]]">
             <a href="#">
@@ -141,7 +136,7 @@
       </div> -->
       <div class="tradingview-widget-container" style="height: 600px; margin-bottom: 100px;" data-bind="if: refreshedCalendar">
         <!-- <h3>Investing.com</h3> -->
-        <!-- <iframe id="mql5-calendar" src="https://www.tradays.com/pt/economic-calendar/widget?dateFormat=DMY" width="100%" height="99%"></iframe> -->
+        <iframe id="mql5-calendar" src="https://www.tradays.com/pt/economic-calendar/widget?dateFormat=DMY" width="100%" height="99%"></iframe>
         <iframe style="box-sizing: border-box; height: calc(100% - 32px); width: 100%;" frameborder="0" allowtransparency="true" marginwidth="0" marginheight="0" data-bind='attr: { 
           src: calendarInvestingUrl
         }'></iframe>
@@ -150,6 +145,51 @@
     </div>
 
     <!-- Indicadores -->
+    <style>
+      .bad-status {
+        background: #ffdcdc;
+      }
+      .good-status {
+        background: #dcffe1;
+      }
+    </style>
+    <!-- params: { economy, chartClass } -->
+    <script type="text/html" id="tplChart">
+      <div class="graph " data-bind="class: params.chartClass">
+        <span class="top-label" data-bind="text: params.economyId"></span>
+        <img data-bind="attr: { 'src': params.indicatorUrl.url() }">
+
+        <!-- ko if: params.indicatorUrl.moreInfo-->
+
+        <div class="oj-flex" data-bind="css: { 'bad-status' : params.indicatorUrl.moreInfo().current.status == 'negative' , 'good-status': params.indicatorUrl.moreInfo().current.status == 'positive' }">
+          <div class="oj-auto">
+            <!-- ko if: params.indicatorUrl.moreInfo().current.status == 'positive' -->
+            <span style="color: green">▲</span>
+            <!-- /ko -->
+            <!-- ko if: params.indicatorUrl.moreInfo().current.status == 'negative' -->
+            <span style="color: red">▼</span>
+            <!-- /ko -->
+            <!-- ko if: params.indicatorUrl.moreInfo().current.status == 'neutral' -->
+            <span style="color: darkgray"><b>=</b></span>
+            <!-- /ko -->
+          </div>
+          <div class="oj-sm-6">
+            <div >
+              <div><b style="color: gray">Última Divulgação: </b>
+                <label data-bind="text: params.indicatorUrl.moreInfo().current.details.fromNow"></label>
+                (<label data-bind="text: params.indicatorUrl.moreInfo().current.reference"></label>)
+              </div>
+              <div><b>Próxima Divulgação: </b>
+                <label data-bind="text: params.indicatorUrl.moreInfo().next.details.fromNow"></label>
+                (<label data-bind="text: params.indicatorUrl.moreInfo().next.reference"></label>)
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- /ko -->
+      </div>
+    </script>
     <div>
       <h1>Indicadores</h1>
       <p>Principais indicadores econômicos para FX, também estão ordenados por relevância, é sábio lembrar que dependendo do contexto atual da ecônomia e/ou tipo de ecônomia os indicadores podem ter relevâncias diferentes</p>
@@ -163,16 +203,11 @@
             <p><small data-bind="text: info.description"></small></p>
             <div class="oj-flex">
               <div class="oj-sm-6">
-                <div class="graph border-black">
-                  <span class="top-label" data-bind="text: $parent.firstEconomy"></span>
-                  <img data-bind="attr: { 'src': $data.url() }">
-                </div>
+                <div data-bind="template: { name: 'tplChart', data: { economyId: $parent.firstEconomy, indicatorUrl: $data, chartClass: 'border-black' }, as: 'params' }"></div>
               </div>
               <div class="oj-sm-6">
-                <div class="graph border-blue">
-                  <span class="top-label" data-bind="text: $parent.secondEconomy"></span>
-                  <img data-bind="attr: { 'src': $parent.currentEco($parent.secondEconomy()).urls.find((urlIt) => urlIt.name == $data.name).url() }">
-                </div>
+                <div data-bind="template: { name: 'tplChart', data: { economyId: $parent.secondEconomy, indicatorUrl: $parent.currentEco($parent.secondEconomy()).urls.find((urlIt) => urlIt.name == $data.name), chartClass: 'border-blue' }, as: 'params' }"></div>
+        
               </div>
             </div>
           </div>

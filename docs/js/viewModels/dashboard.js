@@ -106,6 +106,50 @@ define(["require", "exports", "../accUtils", "knockout", "ojs/ojarraydataprovide
                     name: key
                 };
             };
+            const createServiceCaller = (apiPath) => {
+                return function (economy) {
+                    const urlPath = economy.urlPath;
+                    return fetch("http://localhost:3000" + apiPath + "?target=" + urlPath)
+                        .then(request => request.json())
+                        .then(function (results) {
+                        let firstNotPublished = {};
+                        let lastPublished = {};
+                        for (const result of results) {
+                            if (result.actual == "") {
+                                firstNotPublished = result;
+                                break;
+                            }
+                            lastPublished = result;
+                        }
+                        return {
+                            current: lastPublished,
+                            next: firstNotPublished
+                        };
+                    });
+                };
+            };
+            const listOfMoreInfoPerItemName = {
+                "balance": createServiceCaller("/api/v1/balance-of-trades"),
+                "interest": createServiceCaller("/api/v1/interest-rate"),
+                "unemploymentRate": createServiceCaller("/api/v1/unemployment-rate"),
+                "inflation": createServiceCaller("/api/v1/inflation-rate"),
+                "gdp": createServiceCaller("/api/v1/gdp-growth-rate"),
+            };
+            self.moreInfoIndicator = (economy, target) => {
+                const info = ko.observable();
+                const load = () => {
+                    if (listOfMoreInfoPerItemName[target]) {
+                        listOfMoreInfoPerItemName[target](economy).then((infoStr) => {
+                            info(infoStr);
+                        });
+                    }
+                };
+                return ko.pureComputed(() => {
+                    if (!info())
+                        load();
+                    return info();
+                });
+            };
             self.economies = [
                 {
                     name: "EUR (Euro)",
@@ -116,7 +160,7 @@ define(["require", "exports", "../accUtils", "knockout", "ojs/ojarraydataprovide
                         { name: "gdp", info: getInfo("gdp"), url: (other) => `${baseUrl}?s=eugnemuq`, link: (other) => `${tradingEconomicsUrl}/${other}/gdp-growth` },
                         { name: "interest", info: getInfo("interest"), url: (other) => `${baseUrl}?s=eurr002w`, link: (other) => `${tradingEconomicsUrl}/${other}/interest-rate` },
                         { name: "inflation", info: getInfo("inflation"), url: (other) => `${baseUrl}?s=eccpemuy`, link: (other) => `${tradingEconomicsUrl}/${other}/inflation-cpi` },
-                        { name: "cpi", info: getInfo("cpi"), url: (other) => `${baseUrl}?s=euroareaconpriindcp`, link: (other) => `${tradingEconomicsUrl}/${other}/consumer-price-index-cpi` },
+                        // { name: "cpi", info: getInfo("cpi"), url: (other) => `${baseUrl}?s=euroareaconpriindcp`, link: (other) => `${tradingEconomicsUrl}/${other}/consumer-price-index-cpi` },
                         { name: "balance", info: getInfo("balance"), url: (other) => `${baseUrl}?s=xttbez`, link: (other) => `${tradingEconomicsUrl}/${other}/balance-of-trade` },
                         { name: "manufactoringPmi", info: getInfo("manufactoringPmi"), url: (other) => `${baseUrl}?s=euroareamanpmi`, link: (other) => `${tradingEconomicsUrl}/${other}/manufacturing-pmi` },
                         { name: "servicesPmi", info: getInfo("servicesPmi"), url: (other) => `${baseUrl}?s=euroareaserpmi`, link: (other) => `${tradingEconomicsUrl}/${other}/services-pmi` },
@@ -134,7 +178,7 @@ define(["require", "exports", "../accUtils", "knockout", "ojs/ojarraydataprovide
                         { name: "gdp", info: getInfo("gdp"), url: (other) => `${baseUrl}?s=szgdpcqq`, link: (other) => `${tradingEconomicsUrl}/${other}/gdp-growth` },
                         { name: "interest", info: getInfo("interest"), url: (other) => `${baseUrl}?s=szlttr`, link: (other) => `${tradingEconomicsUrl}/${other}/interest-rate` },
                         { name: "inflation", info: getInfo("inflation"), url: (other) => `${baseUrl}?s=szcpiyoy`, link: (other) => `${tradingEconomicsUrl}/${other}/inflation-cpi` },
-                        { name: "cpi", info: getInfo("cpi"), url: (other) => `${baseUrl}?s=switzerlanconpriindc`, link: (other) => `${tradingEconomicsUrl}/${other}/consumer-price-index-cpi` },
+                        // { name: "cpi", info: getInfo("cpi"), url: (other) => `${baseUrl}?s=switzerlanconpriindc`, link: (other) => `${tradingEconomicsUrl}/${other}/consumer-price-index-cpi` },
                         { name: "balance", info: getInfo("balance"), url: (other) => `${baseUrl}?s=sztbal`, link: (other) => `${tradingEconomicsUrl}/${other}/balance-of-trade` },
                         { name: "manufactoringPmi", info: getInfo("manufactoringPmi"), url: (other) => `${baseUrl}?s=switzerlanmanpmi`, link: (other) => `${tradingEconomicsUrl}/${other}/manufacturing-pmi` },
                         { name: "servicesPmi", info: getInfo("servicesPmi"), url: (other) => `${baseUrl}?s=switzerlanserpmi`, link: (other) => `${tradingEconomicsUrl}/${other}/services-pmi` },
@@ -152,7 +196,7 @@ define(["require", "exports", "../accUtils", "knockout", "ojs/ojarraydataprovide
                         { name: "gdp", info: getInfo("gdp"), url: (other) => `${baseUrl}?s=cge9qoq`, link: (other) => `${tradingEconomicsUrl}/${other}/gdp-growth` },
                         { name: "interest", info: getInfo("interest"), url: (other) => `${baseUrl}?s=cclr`, link: (other) => `${tradingEconomicsUrl}/${other}/interest-rate` },
                         { name: "inflation", info: getInfo("inflation"), url: (other) => `${baseUrl}?s=cacpiyoy`, link: (other) => `${tradingEconomicsUrl}/${other}/inflation-cpi` },
-                        { name: "cpi", info: getInfo("cpi"), url: (other) => `${baseUrl}?s=canadaconpriindcpi`, link: (other) => `${tradingEconomicsUrl}/${other}/consumer-price-index-cpi` },
+                        // { name: "cpi", info: getInfo("cpi"), url: (other) => `${baseUrl}?s=canadaconpriindcpi`, link: (other) => `${tradingEconomicsUrl}/${other}/consumer-price-index-cpi` },
                         { name: "balance", info: getInfo("balance"), url: (other) => `${baseUrl}?s=catbtotb`, link: (other) => `${tradingEconomicsUrl}/${other}/balance-of-trade` },
                         { name: "manufactoringPmi", info: getInfo("manufactoringPmi"), url: (other) => `${baseUrl}?s=canadamanpmi`, link: (other) => `${tradingEconomicsUrl}/${other}/manufacturing-pmi` },
                         { name: "servicesPmi", info: getInfo("servicesPmi"), url: (other) => `${baseUrl}?s=canadaserpmi`, link: (other) => `${tradingEconomicsUrl}/${other}/services-pmi` },
@@ -170,7 +214,7 @@ define(["require", "exports", "../accUtils", "knockout", "ojs/ojarraydataprovide
                         { name: "gdp", info: getInfo("gdp"), url: (other) => `${baseUrl}?s=ukgrybzq`, link: (other) => `${tradingEconomicsUrl}/${other}/gdp-growth` },
                         { name: "interest", info: getInfo("interest"), url: (other) => `${baseUrl}?s=ukbrbase`, link: (other) => `${tradingEconomicsUrl}/${other}/interest-rate` },
                         { name: "inflation", info: getInfo("inflation"), url: (other) => `${baseUrl}?s=ukrpcjyr`, link: (other) => `${tradingEconomicsUrl}/${other}/inflation-cpi` },
-                        { name: "cpi", info: getInfo("cpi"), url: (other) => `${baseUrl}?s=unitedkinconpriindcp`, link: (other) => `${tradingEconomicsUrl}/${other}/consumer-price-index-cpi` },
+                        // { name: "cpi", info: getInfo("cpi"), url: (other) => `${baseUrl}?s=unitedkinconpriindcp`, link: (other) => `${tradingEconomicsUrl}/${other}/consumer-price-index-cpi` },
                         { name: "balance", info: getInfo("balance"), url: (other) => `${baseUrl}?s=uktbttba`, link: (other) => `${tradingEconomicsUrl}/${other}/balance-of-trade` },
                         { name: "manufactoringPmi", info: getInfo("manufactoringPmi"), url: (other) => `${baseUrl}?s=unitedkinmanpmi`, link: (other) => `${tradingEconomicsUrl}/${other}/manufacturing-pmi` },
                         { name: "servicesPmi", info: getInfo("servicesPmi"), url: (other) => `${baseUrl}?s=unitedkinserpmi`, link: (other) => `${tradingEconomicsUrl}/${other}/services-pmi` },
@@ -188,7 +232,7 @@ define(["require", "exports", "../accUtils", "knockout", "ojs/ojarraydataprovide
                         { name: "gdp", info: getInfo("gdp"), url: (other) => `${baseUrl}?s=nzntgdpc`, link: (other) => `${tradingEconomicsUrl}/${other}/gdp-growth` },
                         { name: "interest", info: getInfo("interest"), url: (other) => `${baseUrl}?s=nzocrs`, link: (other) => `${tradingEconomicsUrl}/${other}/interest-rate` },
                         { name: "inflation", info: getInfo("inflation"), url: (other) => `${baseUrl}?s=nzcpiyoy`, link: (other) => `${tradingEconomicsUrl}/${other}/inflation-cpi` },
-                        { name: "cpi", info: getInfo("cpi"), url: (other) => `${baseUrl}?s=newzealanconpriindcp`, link: (other) => `${tradingEconomicsUrl}/${other}/consumer-price-index-cpi` },
+                        // { name: "cpi", info: getInfo("cpi"), url: (other) => `${baseUrl}?s=newzealanconpriindcp`, link: (other) => `${tradingEconomicsUrl}/${other}/consumer-price-index-cpi` },
                         { name: "balance", info: getInfo("balance"), url: (other) => `${baseUrl}?s=nzmtbal`, link: (other) => `${tradingEconomicsUrl}/${other}/balance-of-trade` },
                         { name: "manufactoringPmi", info: getInfo("manufactoringPmi"), url: (other) => `${baseUrl}?s=newzealanmanpmi`, link: (other) => `${tradingEconomicsUrl}/${other}/manufacturing-pmi` },
                         { name: "servicesPmi", info: getInfo("servicesPmi"), url: (other) => `${baseUrl}?s=newzealanserpmi`, link: (other) => `${tradingEconomicsUrl}/${other}/services-pmi` },
@@ -206,7 +250,7 @@ define(["require", "exports", "../accUtils", "knockout", "ojs/ojarraydataprovide
                         { name: "gdp", info: getInfo("gdp"), url: (other) => `${baseUrl}?s=aunagdpc`, link: (other) => `${tradingEconomicsUrl}/${other}/gdp-growth` },
                         { name: "interest", info: getInfo("interest"), url: (other) => `${baseUrl}?s=rbatctr`, link: (other) => `${tradingEconomicsUrl}/${other}/interest-rate` },
                         { name: "inflation", info: getInfo("inflation"), url: (other) => `${baseUrl}?s=aucpiyoy`, link: (other) => `${tradingEconomicsUrl}/${other}/inflation-cpi` },
-                        { name: "cpi", info: getInfo("cpi"), url: (other) => `${baseUrl}?s=australiaconpriindcp`, link: (other) => `${tradingEconomicsUrl}/${other}/consumer-price-index-cpi` },
+                        // { name: "cpi", info: getInfo("cpi"), url: (other) => `${baseUrl}?s=australiaconpriindcp`, link: (other) => `${tradingEconomicsUrl}/${other}/consumer-price-index-cpi` },
                         { name: "balance", info: getInfo("balance"), url: (other) => `${baseUrl}?s=auitgsb`, link: (other) => `${tradingEconomicsUrl}/${other}/balance-of-trade` },
                         { name: "manufactoringPmi", info: getInfo("manufactoringPmi"), url: (other) => `${baseUrl}?s=australiamanpmi`, link: (other) => `${tradingEconomicsUrl}/${other}/manufacturing-pmi` },
                         { name: "servicesPmi", info: getInfo("servicesPmi"), url: (other) => `${baseUrl}?s=australiaserpmi`, link: (other) => `${tradingEconomicsUrl}/${other}/services-pmi` },
@@ -224,7 +268,7 @@ define(["require", "exports", "../accUtils", "knockout", "ojs/ojarraydataprovide
                         { name: "gdp", info: getInfo("gdp"), url: (other) => `${baseUrl}?s=jgdpagdp`, link: (other) => `${tradingEconomicsUrl}/${other}/gdp-growth` },
                         { name: "interest", info: getInfo("interest"), url: (other) => `${baseUrl}?s=bojdtr`, link: (other) => `${tradingEconomicsUrl}/${other}/interest-rate` },
                         { name: "inflation", info: getInfo("inflation"), url: (other) => `${baseUrl}?s=jncpiyoy`, link: (other) => `${tradingEconomicsUrl}/${other}/inflation-cpi` },
-                        { name: "cpi", info: getInfo("cpi"), url: (other) => `${baseUrl}?s=japanconpriindcpi`, link: (other) => `${tradingEconomicsUrl}/${other}/consumer-price-index-cpi` },
+                        // { name: "cpi", info: getInfo("cpi"), url: (other) => `${baseUrl}?s=japanconpriindcpi`, link: (other) => `${tradingEconomicsUrl}/${other}/consumer-price-index-cpi` },
                         { name: "balance", info: getInfo("balance"), url: (other) => `${baseUrl}?s=jntbal`, link: (other) => `${tradingEconomicsUrl}/${other}/balance-of-trade` },
                         { name: "manufactoringPmi", info: getInfo("manufactoringPmi"), url: (other) => `${baseUrl}?s=japanmanpmi`, link: (other) => `${tradingEconomicsUrl}/${other}/manufacturing-pmi` },
                         { name: "servicesPmi", info: getInfo("servicesPmi"), url: (other) => `${baseUrl}?s=japanserpmi`, link: (other) => `${tradingEconomicsUrl}/${other}/services-pmi` },
@@ -242,7 +286,7 @@ define(["require", "exports", "../accUtils", "knockout", "ojs/ojarraydataprovide
                         { name: "gdp", info: getInfo("gdp"), url: (other) => `${baseUrl}?s=gdp+cqoq`, link: (other) => `${tradingEconomicsUrl}/${other}/gdp-growth` },
                         { name: "interest", info: getInfo("interest"), url: (other) => `${baseUrl}?s=fdtr`, link: (other) => `${tradingEconomicsUrl}/${other}/interest-rate` },
                         { name: "inflation", info: getInfo("inflation"), url: (other) => `${baseUrl}?s=cpi+yoy`, link: (other) => `${tradingEconomicsUrl}/${other}/inflation-cpi` },
-                        { name: "cpi", info: getInfo("cpi"), url: (other) => `${baseUrl}?s=unitedstaconpriindcp`, link: (other) => `${tradingEconomicsUrl}/${other}/consumer-price-index-cpi` },
+                        // { name: "cpi", info: getInfo("cpi"), url: (other) => `${baseUrl}?s=unitedstaconpriindcp`, link: (other) => `${tradingEconomicsUrl}/${other}/consumer-price-index-cpi` },
                         { name: "balance", info: getInfo("balance"), url: (other) => `${baseUrl}?s=ustbtot`, link: (other) => `${tradingEconomicsUrl}/${other}/balance-of-trade` },
                         { name: "manufactoringPmi", info: getInfo("manufactoringPmi"), url: (other) => `${baseUrl}?s=unitedstamanpmi`, link: (other) => `${tradingEconomicsUrl}/${other}/manufacturing-pmi` },
                         { name: "servicesPmi", info: getInfo("servicesPmi"), url: (other) => `${baseUrl}?s=unitedstaserpmi`, link: (other) => `${tradingEconomicsUrl}/${other}/services-pmi` },
@@ -260,7 +304,7 @@ define(["require", "exports", "../accUtils", "knockout", "ojs/ojarraydataprovide
                         { name: "gdp", info: getInfo("gdp"), url: (other) => `${baseUrl}?s=sgdpqoq`, link: (other) => `${tradingEconomicsUrl}/${other}/gdp-growth` },
                         { name: "interest", info: getInfo("interest"), url: (other) => `${baseUrl}?s=sibcon`, link: (other) => `${tradingEconomicsUrl}/${other}/interest-rate` },
                         { name: "inflation", info: getInfo("inflation"), url: (other) => `${baseUrl}?s=sicpiyoy`, link: (other) => `${tradingEconomicsUrl}/${other}/inflation-cpi` },
-                        { name: "cpi", info: getInfo("cpi"), url: (other) => `${baseUrl}?s=singaporeconpriindcp`, link: (other) => `${tradingEconomicsUrl}/${other}/consumer-price-index-cpi` },
+                        // { name: "cpi", info: getInfo("cpi"), url: (other) => `${baseUrl}?s=singaporeconpriindcp`, link: (other) => `${tradingEconomicsUrl}/${other}/consumer-price-index-cpi` },
                         { name: "balance", info: getInfo("balance"), url: (other) => `${baseUrl}?s=strde`, link: (other) => `${tradingEconomicsUrl}/${other}/balance-of-trade` },
                         { name: "manufactoringPmi", info: getInfo("manufactoringPmi"), url: (other) => `${baseUrl}?s=singaporemanpmi`, link: (other) => `${tradingEconomicsUrl}/${other}/manufacturing-pmi` },
                         { name: "servicesPmi", info: getInfo("servicesPmi"), url: (other) => `${baseUrl}?s=singaporeserpmi`, link: (other) => `${tradingEconomicsUrl}/${other}/services-pmi` },
@@ -270,6 +314,14 @@ define(["require", "exports", "../accUtils", "knockout", "ojs/ojarraydataprovide
                     ]
                 }
             ];
+            self.getSecondEconomy = () => {
+                self.currentEco(self.secondEconomy());
+            };
+            self.economies.forEach((economy) => {
+                economy.urls.forEach(indicator => {
+                    indicator.moreInfo = self.moreInfoIndicator(economy, indicator.name);
+                });
+            });
             self.currentEco = (currency) => {
                 return self.economies.find((e) => e.currency == currency);
             };
@@ -278,9 +330,10 @@ define(["require", "exports", "../accUtils", "knockout", "ojs/ojarraydataprovide
             };
             function getCurrentBrowserOffsetTimezoneId() {
                 const timezoneByOffset = { "0": "56", "1": "60", "2": "61", "3": "19", "4": "21", "5": "24", "6": "26", "7": "27", "8": "113", "9": "90", "10": "30", "11": "32", "12": "1", "13": "33", "-11": "35", "-10": "3", "-9": "4", "-8": "5", "-7": "6", "-6": "41", "-5": "43", "-4": "46", "-3": "47", "-1": "53" };
-                const currentOffset = new Date().getTimezoneOffset();
+                const currentOffset = (new Date().getTimezoneOffset() / 60) * -1;
                 return timezoneByOffset[currentOffset];
             }
+            self.getCurrentBrowserOffsetTimezoneId = getCurrentBrowserOffsetTimezoneId;
             self.calendarInvestingUrl = ko.computed(() => {
                 const timeframe = () => {
                     switch (self.selectedCalendarView()) {
