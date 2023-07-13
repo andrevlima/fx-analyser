@@ -40,8 +40,8 @@ class DashboardViewModel {
     ], { keyAttributes: "id" });
 
 
-    self.firstEconomy = ko.observable("USD");
-    self.secondEconomy = ko.observable("JPY");
+    self.firstEconomy = ko.observable(localStorage.lastFirstEco || "USD");
+    self.secondEconomy = ko.observable(localStorage.lastSecondEco || "JPY");
 
     self.switchCurrencies = function () {
       const first = self.firstEconomy();
@@ -93,7 +93,13 @@ class DashboardViewModel {
           createWidget("W");
         })
       })
-    })
+
+      ko.computed(() => {
+        localStorage.setItem("lastFirstEco", self.firstEconomy());
+        localStorage.setItem("lastSecondEco", self.secondEconomy());
+      })
+
+    });
 
 
 
@@ -153,7 +159,7 @@ class DashboardViewModel {
     const createServiceCaller = (apiPath) => {
       return function (economy) {
         const urlPath = economy.urlPath;
-        return fetch("http://localhost:3000"+apiPath+"?target=" + urlPath)
+        return fetch("http://"+location.hostname+":3000"+apiPath+"?target=" + urlPath)
           .then(request => request.json())
           .then(function (results) {
             let firstNotPublished: any = {};
