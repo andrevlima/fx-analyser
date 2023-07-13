@@ -40,8 +40,8 @@ class DashboardViewModel {
     ], { keyAttributes: "id" });
 
 
-    self.firstEconomy = ko.observable(localStorage.lastFirstEco || "USD");
-    self.secondEconomy = ko.observable(localStorage.lastSecondEco || "JPY");
+    self.firstEconomy = ko.observable(sessionStorage.lastFirstEco || "USD");
+    self.secondEconomy = ko.observable(sessionStorage.lastSecondEco || "JPY");
 
     self.switchCurrencies = function () {
       const first = self.firstEconomy();
@@ -95,8 +95,8 @@ class DashboardViewModel {
       })
 
       ko.computed(() => {
-        localStorage.setItem("lastFirstEco", self.firstEconomy());
-        localStorage.setItem("lastSecondEco", self.secondEconomy());
+        sessionStorage.setItem("lastFirstEco", self.firstEconomy());
+        sessionStorage.setItem("lastSecondEco", self.secondEconomy());
       })
 
     });
